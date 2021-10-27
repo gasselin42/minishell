@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/22 10:43:09 by gasselin          #+#    #+#             */
-/*   Updated: 2021/10/26 14:16:22 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/10/27 10:06:27 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,15 @@ char	**parse_args(char *line, int *index)
 			j++;
 			while (line[j] && (g_mini.open_quote || !ft_iswhitespace(line[j])))
 			{
+				if (g_mini.open_quote == false && line[j] == '|')
+				{
+					token = ft_strarr_addback(token, ft_substr(line, i, j - i));
+					j++;
+					while (ft_iswhitespace(line[j]))
+						j++;
+					*index = j;
+					return (token);
+				}
 				if (g_mini.open_quote && line[j] == g_mini.char_quote)
 					g_mini.open_quote = false;
 				if (!g_mini.open_quote && (line[j + 1] == 34 || line[j + 1] == 39))

@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:47:03 by gasselin          #+#    #+#             */
-/*   Updated: 2021/10/26 16:40:09 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/10/27 15:49:08 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,11 @@ int	main(int argc, char **argv, char **envp)
 		line = readline("\033[0;34mminishell-1.0$ \033[0m");
 		if (ft_strlen(line) > 0)
 		{
+			add_history(line);
 			g_mini.open_quote = false;
 			g_mini.char_quote = 0;
-			if (!unexpected_token(line))
+			unex_token(line);
+			if (g_mini.is_error)
 			{
 				free (line);
 				continue ;
@@ -72,7 +74,6 @@ int	main(int argc, char **argv, char **envp)
 				free (line);
 				continue ;
 			}
-			add_history(line);
 			token = ft_args(line);
 			free(line);
 			parse_cmds(&token->cmd[0]);
