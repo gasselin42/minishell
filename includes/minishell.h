@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:46:28 by gasselin          #+#    #+#             */
-/*   Updated: 2021/10/27 15:59:14 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/10/28 11:43:29 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,10 @@
 # define SYNTAX_ERR 2
 # define EXIT_ERR 255
 
+# define CTRL_B 131
+# define CTRL_C 1
+# define CTRL_D 0
+
 # define WHITESPACES "\t\n\v\f\r "
 # define NAMESET "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_"
 # define SYNTAX "<|>"
@@ -88,9 +92,12 @@ void	ft_addenv(const char *name, const char *value);
 t_token	*ft_args(char *line);
 void	add_cell(t_token **token, char **cmd);
 
-
 void	unex_token(char *str);
-bool	verify_quotes(const char *str);
+bool	verify_quotes(char *str);
+void	manage_syntax(char *str);
+int		manage_syntax3(char *str);
+void	manage_newline(void);
+
 void	print_error(const char *v1, const char *v2, const char *v3, int code);
 
 void	ft_free_tokens(t_token **token);

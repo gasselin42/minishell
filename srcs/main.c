@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:47:03 by gasselin          #+#    #+#             */
-/*   Updated: 2021/10/27 15:49:08 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/10/28 11:50:49 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,30 @@ void	parse_cmds(char **arg)
 	// execve
 }
 
+void	ctrl_backslash(int sig)
+{
+	(void)sig;
+	printf("Quit");
+	g_mini.output_code = CTRL_B;
+}
+
+void	ctrl_d(int sig)
+{
+	(void)sig;
+	printf("\n");
+	g_mini.output_code = CTRL_D;
+}
+
+void	ctrl_c(int sig)
+{
+	(void)sig;
+	printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	g_mini.output_code = CTRL_C;
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
@@ -54,6 +78,8 @@ int	main(int argc, char **argv, char **envp)
 	(void) argc;
 	(void) argv;
 	init_minishell(envp);
+	signal(SIGINT, ctrl_c);
+	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
 		line = readline("\033[0;34mminishell-1.0$ \033[0m");
@@ -75,10 +101,12 @@ int	main(int argc, char **argv, char **envp)
 				continue ;
 			}
 			token = ft_args(line);
+			printf("%s\n", token->cmd[1]);
 			free(line);
 			parse_cmds(&token->cmd[0]);
 			ft_free_tokens(&token);
 		}
 	}
+	printf("Program Exited!");
 	return (EXIT_SUCCESS);
 }
