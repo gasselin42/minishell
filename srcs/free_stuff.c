@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 14:06:30 by gasselin          #+#    #+#             */
-/*   Updated: 2021/10/26 14:12:41 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/01 14:19:49 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,17 @@
 void	ft_free_tokens(t_token **token)
 {
 	t_token *tmp;
-	t_token	*tmp2;
 	
-	if ((*token))
+	if (token)
 	{
-		tmp = *token;
-		while (tmp != NULL)
+		while ((*token) != NULL)
 		{
-			tmp2 = (*token)->next;
-			ft_strarr_free(tmp->cmd);
-			tmp->next = NULL;
-			tmp->prev = NULL;
-			tmp = tmp2;
+			tmp = (*token)->next;
+			if (tmp == NULL && (*token)->pipe)
+				tmp = (*token)->pipe;
+			free ((*token)->cmd);
+			free ((*token));
+			*token = tmp;
 		}
 	}
 }

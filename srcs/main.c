@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:47:03 by gasselin          #+#    #+#             */
-/*   Updated: 2021/10/28 11:50:49 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/01 16:50:32 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,11 @@ void	init_minishell(char **envp)
 	g_mini.char_quote = 0;
 }
 
-void	parse_cmds(char **arg)
+void	parse_cmds(t_token *token)
 {
+	char	**arg;
+
+	arg = merge_tokens(token);
 	if (ft_strcmp(arg[0], "export") == 0)
 		ft_export(arg + 1);
 	else if (ft_strcmp(arg[0], "unset") == 0)
@@ -43,7 +46,8 @@ void	parse_cmds(char **arg)
 		ft_cd(arg);
 	else if (ft_strcmp(arg[0], "exit") == 0)
 		ft_exit(arg);
-	// execve
+	else
+		ms_exec(token);
 }
 
 void	ctrl_backslash(int sig)
@@ -78,8 +82,19 @@ int	main(int argc, char **argv, char **envp)
 	(void) argc;
 	(void) argv;
 	init_minishell(envp);
-	signal(SIGINT, ctrl_c);
-	signal(SIGQUIT, SIG_IGN);
+	// line = "Allo$LOGNAME";
+	// token = ft_args(line);
+	// token = manage_env(token);
+	// signal(SIGINT, ctrl_c);
+	// signal(SIGQUIT, SIG_IGN);
+	// int i = -1;
+	// while (g_mini.path[++i])
+	// 	printf("%s\n", g_mini.path[i]);
+	// char **arg = malloc(sizeof(char *) * 3);
+	// arg[0] = ft_strdup("ls");
+	// arg[1] = ft_strdup("-la");
+	// arg[2] = NULL;
+	// execve("/bin/ls", arg, envp);
 	while (1)
 	{
 		line = readline("\033[0;34mminishell-1.0$ \033[0m");
@@ -89,21 +104,33 @@ int	main(int argc, char **argv, char **envp)
 			g_mini.open_quote = false;
 			g_mini.char_quote = 0;
 			unex_token(line);
-			if (g_mini.is_error)
-			{
-				free (line);
-				continue ;
-			}
 			if (verify_quotes(line))
 			{
 				print_error(NULL, NULL, QUOTES, SYNTAX_ERR);
 				free (line);
 				continue ;
 			}
+			if (g_mini.is_error)
+			{
+				free (line);
+				continue ;
+			}
 			token = ft_args(line);
-			printf("%s\n", token->cmd[1]);
+			token = manage_env(token);
+			parse_cmds(token);
+			// char **merge = merge_tokens(token);
+			// printf("%s\n", merge[0]);
+			// printf("%s\n", merge[1]);
+			// printf("%s\n", merge[2]);
+			// printf("%s\n", token->cmd);
+			// printf("%s\n", token->next->cmd);
+			// printf("%s\n", token->pipe->cmd);
+			// printf("%u\n", token->pipe->over);
+			// printf("%u\n", token->pipe->type);
+			// printf("%s\n", token->pipe->next->cmd);
+			// printf("%u\n", token->pipe->next->over);
+			// printf("%u\n", token->pipe->next->type);
 			free(line);
-			parse_cmds(&token->cmd[0]);
 			ft_free_tokens(&token);
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:46:28 by gasselin          #+#    #+#             */
-/*   Updated: 2021/10/28 11:43:29 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/01 16:48:46 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <signal.h>
 # include <errno.h>
 # include <string.h>
+# include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
@@ -46,6 +47,7 @@
 # define SUCCESS 0
 # define GEN_ERR 1
 # define SYNTAX_ERR 2
+# define FILE_ERR 127
 # define EXIT_ERR 255
 
 # define CTRL_B 131
@@ -56,11 +58,27 @@
 # define NAMESET "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_"
 # define SYNTAX "<|>"
 
+typedef enum e_over
+{
+	DONE,
+	CONTINUE,
+}	t_over;
+
+typedef enum e_type
+{
+	TEXT,
+	S_QUOTE,
+	D_QUOTE
+}	t_type;
+
 typedef struct s_token
 {
 	struct s_token	*prev;
 	struct s_token	*next;
-	char			**cmd;
+	struct s_token	*pipe;
+	char			*cmd;
+	t_type			type;
+	t_over			over;
 }	t_token;
 
 typedef struct s_minishell
@@ -73,6 +91,7 @@ typedef struct s_minishell
 	bool		open_quote;
 	char		char_quote;
 	char		*syntax;
+	bool		dbl_redir;
 }	t_minishell;
 
 extern t_minishell g_mini;
@@ -90,13 +109,20 @@ int		ft_setenv(const char *name, const char *value, int overwrite);
 void	ft_addenv(const char *name, const char *value);
 
 t_token	*ft_args(char *line);
-void	add_cell(t_token **token, char **cmd);
+void	add_cell(t_token **token, char *cmd, t_type type, t_over over);
 
 void	unex_token(char *str);
 bool	verify_quotes(char *str);
 void	manage_syntax(char *str);
 int		manage_syntax3(char *str);
 void	manage_newline(void);
+
+t_token	*manage_env(t_token *token);
+char	**merge_tokens(t_token *token);
+
+void	ms_exec(t_token *token);
+void	execute(char **cmd);
+char	*find_path(const char *cmd);
 
 void	print_error(const char *v1, const char *v2, const char *v3, int code);
 

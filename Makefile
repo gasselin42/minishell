@@ -6,7 +6,7 @@
 #    By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/15 10:45:54 by gasselin          #+#    #+#              #
-#    Updated: 2021/10/28 11:42:29 by gasselin         ###   ########.fr        #
+#    Updated: 2021/11/01 15:20:31 by gasselin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ SRCS	= srcs/main.c srcs/error.c srcs/builtins/cd.c srcs/builtins/echo.c \
 			srcs/builtins/pwd.c srcs/builtins/unset.c srcs/builtins/ft_getenv.c \
 			srcs/execute/exec_utils.c srcs/parsing/dlist_utils.c \
 			srcs/parsing/parse_args.c srcs/parsing/syntax_errors.c srcs/free_stuff.c \
-			srcs/parsing/manage_syntax.c srcs/execute/delete_quotes.c
+			srcs/parsing/manage_syntax.c srcs/execute/place_env.c srcs/execute/execute.c
 
 OBJS	= ${SRCS:.c=.o}
 

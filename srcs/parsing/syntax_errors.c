@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 15:03:49 by gasselin          #+#    #+#             */
-/*   Updated: 2021/10/28 10:28:59 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/01 16:50:02 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ bool	verify_quotes(char *str)
 	int	i;
 
 	i = 0;
+	g_mini.open_quote = false;
 	while (str[i])
 	{
 		if (g_mini.open_quote == false && (str[i] == 34 || str[i] == 39))
@@ -34,7 +35,7 @@ bool	verify_quotes(char *str)
 int	unex_token3(int i)
 {
 	manage_syntax(g_mini.syntax + i);
-	if (g_mini.is_error == 0)
+	if (g_mini.is_error == 0 && !g_mini.dbl_redir)
 	{
 		if (g_mini.syntax[i] == '>' && g_mini.syntax[i + 1] == '|')
 			i += manage_syntax3(g_mini.syntax + i + 1);
@@ -82,6 +83,7 @@ void	unex_token(char *str)
 {
 	g_mini.is_error = 0;
 	g_mini.open_quote = false;
+	g_mini.dbl_redir = false;
 	g_mini.syntax = ft_strtrim((const char *)str, WHITESPACES);
 	if (g_mini.syntax[0] && g_mini.syntax[0] == '|')
 	{
