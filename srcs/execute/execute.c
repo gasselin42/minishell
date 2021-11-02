@@ -6,38 +6,11 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 14:25:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/01 16:17:55 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/02 11:00:15 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// int	get_next_line(char **line)
-// {
-// 	char	*buffer;
-// 	int		i;
-// 	int		ret;
-// 	char	c;
-
-// 	i = -1;
-// 	ret = 0;
-// 	buffer = (char *)malloc(10000);
-// 	if (!buffer)
-// 		return (-1);
-// 	ret = read(0, &c, 1);
-// 	while (ret && c != '\n' && c != '\0')
-// 	{
-// 		if (c != '\n' && c != '\0')
-// 			buffer[i] = c;
-// 		i++;
-// 		ret = read(0, &c, 1);
-// 	}
-// 	buffer[i] = '\n';
-// 	buffer[++i] = '\0';
-// 	*line = buffer;
-// 	free(buffer);
-// 	return (ret);
-// }
 
 // int	open_file(char *argv, int i)
 // {
@@ -55,6 +28,27 @@
 // 	return (file);
 // }
 
+bool	check_builtins(char **arg)
+{
+	if (ft_strcmp("exit", arg[0]) == 0)
+		ft_exit(arg);
+	else if (ft_strcmp("export", arg[0]) == 0)
+		ft_export(arg);
+	else if (ft_strcmp("echo", arg[0]) == 0)
+		ft_echo(arg);
+	else if (ft_strcmp("cd", arg[0]) == 0)
+		ft_cd(arg);
+	else if (ft_strcmp("unset", arg[0]) == 0)
+		ft_unset(arg);
+	else if (ft_strcmp("pwd", arg[0]) == 0)
+		ft_pwd();
+	else if (ft_strcmp("env", arg[0]) == 0)
+		ft_env(arg);
+	else
+		return (false);
+	return (true);
+}
+
 void	parent_process(char **arg)
 {
 	pid_t	pid;
@@ -65,7 +59,10 @@ void	parent_process(char **arg)
 	if (pid == -1)
 		printf("Dang! This fork didn't work!");
 	if (pid == 0)
-		execute(arg);
+	{
+		if (!check_builtins(arg))
+			execute(arg);
+	}
 	else
 	{
 		waitpid(pid, &status, 0);
@@ -81,16 +78,14 @@ void	child_process(char **arg)
 	int		fd[2];
 
 	status = 0;
-	if (pipe(fd) == -1)
-		printf("Dang! This pipe didn't work!");
+	pipe(fd);
 	pid = fork();
-	if (pid == -1)
-		printf("Dang! This fork didn't work!");
 	if (pid == 0)
 	{
 		close(fd[0]);
 		dup2(fd[1], STDOUT_FILENO);
-		execute(arg);
+		if (!check_builtins(arg))
+			execute(arg);
 	}
 	else
 	{

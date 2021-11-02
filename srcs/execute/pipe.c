@@ -1,32 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/18 16:29:13 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/02 10:43:14 by gasselin         ###   ########.fr       */
+/*   Created: 2021/11/02 11:23:04 by gasselin          #+#    #+#             */
+/*   Updated: 2021/11/02 14:49:41 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_env(char **argv)
-{
-	int	i;
+// void	run_pipe()
+// {
+// 	int	fd[2];
+// 	int	fdd;
 
-	i = 0;
-	g_mini.output_code = SUCCESS;
-	if (argv[1])
-	{
-		print_error("env", NULL, ARGS_ERR, GEN_ERR);
-		return ;
-	}
-	while (g_mini.env[i])
-	{
-		if (ft_strchr(g_mini.env[i], '='))
-			ft_putendl_fd(g_mini.env[i], STDOUT_FILENO);
-		i++;
-	}
-}
+// 	fdd = dup(0);
+// 	pipe(fd);
+// 	g_mini.pid = fork();
+// 	if (g_mini.pid == 0)
+// 	{
+		
+// 	}
+// }

@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:47:03 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/01 16:50:32 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/02 14:51:24 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,13 @@ void	parse_cmds(t_token *token)
 
 	arg = merge_tokens(token);
 	if (ft_strcmp(arg[0], "export") == 0)
-		ft_export(arg + 1);
+		ft_export(arg);
 	else if (ft_strcmp(arg[0], "unset") == 0)
-		ft_unset(arg + 1);
+		ft_unset(arg);
 	else if (ft_strcmp(arg[0], "env") == 0)
-		ft_env(arg + 1);
+		ft_env(arg);
 	else if (ft_strcmp(arg[0], "echo") == 0)
-		ft_echo(arg + 1);
+		ft_echo(arg);
 	else if (ft_strcmp(arg[0], "pwd") == 0)
 		ft_pwd();
 	else if (ft_strcmp(arg[0], "cd") == 0)
@@ -82,19 +82,8 @@ int	main(int argc, char **argv, char **envp)
 	(void) argc;
 	(void) argv;
 	init_minishell(envp);
-	// line = "Allo$LOGNAME";
-	// token = ft_args(line);
-	// token = manage_env(token);
 	// signal(SIGINT, ctrl_c);
 	// signal(SIGQUIT, SIG_IGN);
-	// int i = -1;
-	// while (g_mini.path[++i])
-	// 	printf("%s\n", g_mini.path[i]);
-	// char **arg = malloc(sizeof(char *) * 3);
-	// arg[0] = ft_strdup("ls");
-	// arg[1] = ft_strdup("-la");
-	// arg[2] = NULL;
-	// execve("/bin/ls", arg, envp);
 	while (1)
 	{
 		line = readline("\033[0;34mminishell-1.0$ \033[0m");
@@ -117,23 +106,11 @@ int	main(int argc, char **argv, char **envp)
 			}
 			token = ft_args(line);
 			token = manage_env(token);
+			token = init_pipes_and_merge(token);
 			parse_cmds(token);
-			// char **merge = merge_tokens(token);
-			// printf("%s\n", merge[0]);
-			// printf("%s\n", merge[1]);
-			// printf("%s\n", merge[2]);
-			// printf("%s\n", token->cmd);
-			// printf("%s\n", token->next->cmd);
-			// printf("%s\n", token->pipe->cmd);
-			// printf("%u\n", token->pipe->over);
-			// printf("%u\n", token->pipe->type);
-			// printf("%s\n", token->pipe->next->cmd);
-			// printf("%u\n", token->pipe->next->over);
-			// printf("%u\n", token->pipe->next->type);
 			free(line);
 			ft_free_tokens(&token);
 		}
 	}
-	printf("Program Exited!");
 	return (EXIT_SUCCESS);
 }

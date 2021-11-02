@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:46:28 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/01 16:48:46 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/02 15:27:25 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # define NO_IDENT "not a valid identifier"
 # define NUM_ERR "numeric argument required"
 # define QUOTES "unclosed quote(s)"
+# define DIRECTORY "is a directory"
 
 # define UNEX_PIPE "syntax error near unexpected token '|'"
 # define UNEX_PIPES "syntax error near unexpected token '||'"
@@ -47,6 +48,7 @@
 # define SUCCESS 0
 # define GEN_ERR 1
 # define SYNTAX_ERR 2
+# define DIR_ERR 126
 # define FILE_ERR 127
 # define EXIT_ERR 255
 
@@ -68,8 +70,18 @@ typedef enum e_type
 {
 	TEXT,
 	S_QUOTE,
-	D_QUOTE
+	D_QUOTE,
+	REDIR_L,
+	REDIR_R,
+	HEREDOC,
+	APPEND
 }	t_type;
+
+typedef struct s_redirs
+{
+	t_type	type;
+	char	*file;
+}	t_redirs;
 
 typedef struct s_token
 {
@@ -77,6 +89,9 @@ typedef struct s_token
 	struct s_token	*next;
 	struct s_token	*pipe;
 	char			*cmd;
+	char			**merge;
+	t_redirs		*redirs;
+	pid_t			fd[2];
 	t_type			type;
 	t_over			over;
 }	t_token;
@@ -92,6 +107,8 @@ typedef struct s_minishell
 	char		char_quote;
 	char		*syntax;
 	bool		dbl_redir;
+	pid_t		pid;
+	char		*heredoc_pwd;
 }	t_minishell;
 
 extern t_minishell g_mini;
@@ -108,7 +125,9 @@ char	*ft_getenv(const char *name);
 int		ft_setenv(const char *name, const char *value, int overwrite);
 void	ft_addenv(const char *name, const char *value);
 
+t_token	*init_pipes_and_merge(t_token *token);
 t_token	*ft_args(char *line);
+t_token *parse_args(char *line, int *index);
 void	add_cell(t_token **token, char *cmd, t_type type, t_over over);
 
 void	unex_token(char *str);

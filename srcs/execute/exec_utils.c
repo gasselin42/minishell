@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 14:04:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/01 16:32:15 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/02 15:14:54 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,17 @@ char	*find_path(const char *cmd)
 
 void	execute(char **cmd)
 {
+	char	*cwd;
+
+	cwd = getcwd(NULL, 0);
 	g_mini.output_code = SUCCESS;
-	if (ft_strchr(cmd[0], '/'))
+	execve(cmd[0], cmd, g_mini.env);
+	if (cmd[0][0] && cmd[0][0] == '.' && cmd[0][1] == '/' && chdir(cmd[0]) == 0)
+	{
+		chdir(cwd);
+		print_error(NULL, cmd[0], DIRECTORY, DIR_ERR);
+	}
+	else if (ft_strchr(cmd[0], '/'))
 		print_error(NULL, cmd[0], NO_FLDIR, FILE_ERR);
 	else if (execve(find_path(cmd[0]), cmd, g_mini.env) == -1)
 		print_error(cmd[0], NULL, strerror(errno), errno);
@@ -83,4 +92,18 @@ char	**merge_tokens(t_token *token)
 	}
 	merge[i] = NULL;
 	return (merge);
+}
+
+t_token	*init_pipes_and_merge(t_token *token)
+{
+	t_token	*tmp;
+
+	tmp = token;
+	while (tmp)
+	{
+		tmp->merge = merge_tokens(tmp);
+		pipe(tmp->fd);
+		tmp = tmp->pipe;
+	}
+	return (token);
 }

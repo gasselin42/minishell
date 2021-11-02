@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 16:29:29 by gasselin          #+#    #+#             */
-/*   Updated: 2021/10/25 11:35:32 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/02 10:41:41 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	verify_name(char **argv)
 	int		i;
 	char	**name;
 
-	i = 0;
+	i = 1;
 	while (argv[i])
 	{
 		name = ft_split(argv[i], '=');
@@ -43,7 +43,7 @@ void	ft_export(char **argv)
 
 	i = -1;
 	g_mini.output_code = SUCCESS;
-	if (!argv[0])
+	if (!argv[1])
 	{
 		sort = ft_strarr_dup(g_mini.env, 0);
 		ft_strarr_sort(sort, g_mini.env_size);
