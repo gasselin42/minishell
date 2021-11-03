@@ -6,16 +6,11 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/22 10:43:09 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/02 16:32:26 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/03 11:43:10 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-t_token	*parse_redirs(t_token *token)
-{
-	
-}
 
 char	**ft_trim_args(char **arr)
 {

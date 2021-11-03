@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 14:04:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/02 15:14:54 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/03 11:06:17 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	execute(char **cmd)
 	cwd = getcwd(NULL, 0);
 	g_mini.output_code = SUCCESS;
 	execve(cmd[0], cmd, g_mini.env);
-	if (cmd[0][0] && cmd[0][0] == '.' && cmd[0][1] == '/' && chdir(cmd[0]) == 0)
+	if (cmd[0][0] && cmd[0][0] == '.' && chdir(cmd[0]) == 0)
 	{
 		chdir(cwd);
 		print_error(NULL, cmd[0], DIRECTORY, DIR_ERR);
@@ -102,7 +102,6 @@ t_token	*init_pipes_and_merge(t_token *token)
 	while (tmp)
 	{
 		tmp->merge = merge_tokens(tmp);
-		pipe(tmp->fd);
 		tmp = tmp->pipe;
 	}
 	return (token);

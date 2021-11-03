@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 14:25:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/02 11:00:15 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/03 11:25:07 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ bool	check_builtins(char **arg)
 		ft_env(arg);
 	else
 		return (false);
+	exit (0);
 	return (true);
 }
 
@@ -56,8 +57,6 @@ void	parent_process(char **arg)
 
 	status = 0;
 	pid = fork();
-	if (pid == -1)
-		printf("Dang! This fork didn't work!");
 	if (pid == 0)
 	{
 		if (!check_builtins(arg))
