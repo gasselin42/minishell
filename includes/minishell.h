@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:46:28 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/02 15:27:25 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/03 16:05:23 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # define NUM_ERR "numeric argument required"
 # define QUOTES "unclosed quote(s)"
 # define DIRECTORY "is a directory"
+# define CMD_NOT_FOUND "command not found"
 
 # define UNEX_PIPE "syntax error near unexpected token '|'"
 # define UNEX_PIPES "syntax error near unexpected token '||'"
@@ -109,6 +110,8 @@ typedef struct s_minishell
 	bool		dbl_redir;
 	pid_t		pid;
 	char		*heredoc_pwd;
+	char		*cwd_exec;
+	char		*path_exec;
 }	t_minishell;
 
 extern t_minishell g_mini;
@@ -125,7 +128,7 @@ char	*ft_getenv(const char *name);
 int		ft_setenv(const char *name, const char *value, int overwrite);
 void	ft_addenv(const char *name, const char *value);
 
-t_token	*init_pipes_and_merge(t_token *token);
+t_token	*init_merge(t_token *token);
 t_token	*ft_args(char *line);
 t_token *parse_args(char *line, int *index);
 void	add_cell(t_token **token, char *cmd, t_type type, t_over over);
@@ -137,6 +140,7 @@ int		manage_syntax3(char *str);
 void	manage_newline(void);
 
 t_token	*manage_env(t_token *token);
+char	*place_env(char *cmd, int *i);
 char	**merge_tokens(t_token *token);
 
 void	ms_exec(t_token *token);

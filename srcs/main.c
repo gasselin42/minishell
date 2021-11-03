@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:47:03 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/03 11:11:31 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/03 15:55:33 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int	main(int argc, char **argv, char **envp)
 			}
 			token = ft_args(line);
 			token = manage_env(token);
-			token = init_pipes_and_merge(token);
+			token = init_merge(token);
 			ms_exec(token);
 			free(line);
 			ft_free_tokens(&token);

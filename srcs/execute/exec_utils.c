@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 14:04:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/03 11:06:17 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/03 15:55:18 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,25 @@ char	*find_path(const char *cmd)
 }
 
 void	execute(char **cmd)
-{
-	char	*cwd;
-
-	cwd = getcwd(NULL, 0);
+{	
+	g_mini.cwd_exec = getcwd(NULL, 0);
 	g_mini.output_code = SUCCESS;
-	execve(cmd[0], cmd, g_mini.env);
+	g_mini.path_exec = find_path(cmd[0]);
 	if (cmd[0][0] && cmd[0][0] == '.' && chdir(cmd[0]) == 0)
 	{
-		chdir(cwd);
+		chdir(g_mini.cwd_exec);
 		print_error(NULL, cmd[0], DIRECTORY, DIR_ERR);
+		return ;
 	}
-	else if (ft_strchr(cmd[0], '/'))
+	if (g_mini.path_exec == NULL)
+	{
+		print_error(NULL, cmd[0], CMD_NOT_FOUND, FILE_ERR);
+		return ;
+	}
+	execve(cmd[0], cmd, g_mini.env);
+	if (ft_strchr(cmd[0], '/'))
 		print_error(NULL, cmd[0], NO_FLDIR, FILE_ERR);
-	else if (execve(find_path(cmd[0]), cmd, g_mini.env) == -1)
+	else if (execve(g_mini.path_exec, cmd, g_mini.env) == -1)
 		print_error(cmd[0], NULL, strerror(errno), errno);
 }
 
@@ -94,7 +99,7 @@ char	**merge_tokens(t_token *token)
 	return (merge);
 }
 
-t_token	*init_pipes_and_merge(t_token *token)
+t_token	*init_merge(t_token *token)
 {
 	t_token	*tmp;
 

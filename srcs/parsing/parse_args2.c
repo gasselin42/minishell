@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 11:56:45 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/02 14:56:10 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/03 16:12:00 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,17 @@ t_token	*parse_args(char *line, int *index)
 			add_cell(&token, ft_substr(line, i, j - i), TEXT, DONE);
 			break ;
 		}
+		// else if (line[j] == '$')
+		// {
+		// 	if (!ft_iswhitespace(line[j - 1]))
+		// 		add_cell(&token, ft_substr(line, i, j - i), TEXT, DONE);
+		// 	line = place_env(line, &j);
+		// 	j++;
+		// 	while (ft_iswhitespace(line[j]))
+		// 		j++;
+		// 	i = j;
+		// 	j--;
+		// }
 		else
 			parse_args2(&token, line, &i, &j);
 	}
