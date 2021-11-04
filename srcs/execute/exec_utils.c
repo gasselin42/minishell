@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 14:04:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/03 15:55:18 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/04 14:52:13 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ int	define_size(t_token *token)
 	tmp = token;
 	while (tmp != NULL)
 	{
-		if (tmp->over == DONE)
+		if (tmp->over == DONE && !(tmp->type == TEXT && tmp->cmd[0] == '\0'
+			&& (!tmp->prev || tmp->prev->over == DONE)))
 			size++;
 		tmp = tmp->next;
 	}
@@ -81,6 +82,11 @@ char	**merge_tokens(t_token *token)
 	merge = malloc(sizeof(char *) * define_size(token));
 	while (tmp != NULL)
 	{
+		if (!(tmp->over == DONE && !(tmp->type == TEXT && tmp->cmd[0] == '\0' && (!tmp->prev || tmp->prev->over == DONE))))
+		{
+			tmp = tmp->next;
+			continue ;
+		}
 		str = ft_strdup("");
 		while (tmp->over != DONE)
 		{
@@ -99,6 +105,28 @@ char	**merge_tokens(t_token *token)
 	return (merge);
 }
 
+char	*merge_cmd(char **merge)
+{
+	char	*line;
+	char	*tmp;
+	int		i;
+
+	i = 0;
+	line = NULL;
+	if (merge && *merge)
+	{
+		line = ft_strdup(merge[0]);
+		while (merge[++i])
+		{
+			tmp = ft_strjoin_triple(line, " ", merge[i]);
+			free (line);
+			line = ft_strdup(tmp);
+			free (tmp);
+		}
+	}
+	return (line);
+}
+
 t_token	*init_merge(t_token *token)
 {
 	t_token	*tmp;
@@ -107,6 +135,7 @@ t_token	*init_merge(t_token *token)
 	while (tmp)
 	{
 		tmp->merge = merge_tokens(tmp);
+		tmp->merge_cmd = merge_cmd(tmp->merge);
 		tmp = tmp->pipe;
 	}
 	return (token);

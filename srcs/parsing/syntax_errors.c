@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 15:03:49 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/01 16:50:02 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/04 16:06:57 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,7 @@ int	unex_token3(int i)
 {
 	manage_syntax(g_mini.syntax + i);
 	if (g_mini.is_error == 0 && !g_mini.dbl_redir)
-	{
-		if (g_mini.syntax[i] == '>' && g_mini.syntax[i + 1] == '|')
-			i += manage_syntax3(g_mini.syntax + i + 1);
-		else
-			i += manage_syntax3(g_mini.syntax + i);
-	}
+		i += manage_syntax3(g_mini.syntax + i);
 	return (i);
 }
 

@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe.c                                             :+:      :+:    :+:   */
+/*   ft_strarr_iter.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/02 11:23:04 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/04 12:18:13 by gasselin         ###   ########.fr       */
+/*   Created: 2021/11/04 15:15:15 by gasselin          #+#    #+#             */
+/*   Updated: 2021/11/04 15:16:35 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-// void	run_pipe()
-// {
-// 	int	fd[2];
-// 	int	fdd;
-
-// 	fdd = dup(0);
-// 	pipe(fd);
-// 	g_mini.pid = fork();
-// 	if (g_mini.pid == 0)
-// 	{
-		
-// 	}
-// }
+int	ft_strarr_iter(char **arr)
+{
+	int	i;
+	
+	i = 0;
+	if (arr && *arr)
+	{
+		while (arr[i])
+			i++;
+	}
+	return (i);
+}

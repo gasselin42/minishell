@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:47:03 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/03 15:55:33 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/04 16:29:55 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,28 @@ void	ctrl_c(int sig)
 	g_mini.output_code = CTRL_C;
 }
 
+bool	init_exec(char *line, t_job **jobs, t_token **token)
+{
+	unex_token(line);
+	if (verify_quotes(line))
+	{
+		print_error(NULL, NULL, QUOTES, SYNTAX_ERR);
+		return (false);
+	}
+	if (g_mini.is_error)
+		return (false);
+	*token = ft_args(line);
+	*token = manage_env(*token);
+	*token = init_merge(*token);
+	*jobs =	init_jobs(*token);
+	return (true);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
 	t_token	*token;
+	t_job	*jobs;
 
 	(void) argc;
 	(void) argv;
@@ -92,22 +110,9 @@ int	main(int argc, char **argv, char **envp)
 			add_history(line);
 			g_mini.open_quote = false;
 			g_mini.char_quote = 0;
-			unex_token(line);
-			if (verify_quotes(line))
-			{
-				print_error(NULL, NULL, QUOTES, SYNTAX_ERR);
-				free (line);
-				continue ;
-			}
-			if (g_mini.is_error)
-			{
-				free (line);
-				continue ;
-			}
-			token = ft_args(line);
-			token = manage_env(token);
-			token = init_merge(token);
-			ms_exec(token);
+			if (!init_exec(line, &jobs, &token))
+				continue;
+			// ms_exec(token);
 			free(line);
 			ft_free_tokens(&token);
 		}

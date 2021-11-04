@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:46:28 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/03 16:05:23 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/04 15:47:12 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,15 @@ typedef enum e_type
 typedef struct s_redirs
 {
 	t_type	type;
-	char	*file;
+	char	**file;
 }	t_redirs;
+
+typedef struct s_job
+{
+	char			**cmd;
+	char			**redirs;
+	struct s_job	*next;
+}	t_job;
 
 typedef struct s_token
 {
@@ -90,11 +97,12 @@ typedef struct s_token
 	struct s_token	*next;
 	struct s_token	*pipe;
 	char			*cmd;
+	char			*merge_cmd;
 	char			**merge;
-	t_redirs		*redirs;
 	pid_t			fd[2];
 	t_type			type;
 	t_over			over;
+	t_redirs		*redirs;
 }	t_token;
 
 typedef struct s_minishell
@@ -131,6 +139,7 @@ void	ft_addenv(const char *name, const char *value);
 t_token	*init_merge(t_token *token);
 t_token	*ft_args(char *line);
 t_token *parse_args(char *line, int *index);
+t_job	*init_jobs(t_token *token);
 void	add_cell(t_token **token, char *cmd, t_type type, t_over over);
 
 void	unex_token(char *str);
@@ -142,6 +151,8 @@ void	manage_newline(void);
 t_token	*manage_env(t_token *token);
 char	*place_env(char *cmd, int *i);
 char	**merge_tokens(t_token *token);
+int		count_redirs(t_token *token);
+int		is_redirection(char	*cmd);
 
 void	ms_exec(t_token *token);
 void	execute(char **cmd);
