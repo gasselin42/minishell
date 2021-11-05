@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 14:25:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/03 11:25:07 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/05 12:24:18 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,29 +28,58 @@
 // 	return (file);
 // }
 
-bool	check_builtins(char **arg)
+// void	ms_exec(t_token *token)
+// {
+// 	int	i;
+// 	int	saved_stdin;
+// 	t_token	*tmp;
+// 	char	**arg;
+
+// 	i = 0;
+// 	saved_stdin = dup(0);
+// 	tmp = token;
+// 	if (token)
+// 	{
+// 		while (tmp->pipe)
+// 		{
+// 			arg = merge_tokens(tmp);
+// 			child_process(arg);
+// 			ft_strarr_free(arg);
+// 			arg = NULL;
+// 			tmp = tmp->pipe;
+// 		}
+// 		arg = merge_tokens(tmp);
+// 		parent_process(arg);
+// 		dup2(saved_stdin, 0);
+// 		close(saved_stdin);
+// 		ft_strarr_free(arg);
+// 		arg = NULL;
+// 	}
+// 	return ;
+// }
+
+bool	check_builtins(t_job *jobs)
 {
-	if (ft_strcmp("exit", arg[0]) == 0)
-		ft_exit(arg);
-	else if (ft_strcmp("export", arg[0]) == 0)
-		ft_export(arg);
-	else if (ft_strcmp("echo", arg[0]) == 0)
-		ft_echo(arg);
-	else if (ft_strcmp("cd", arg[0]) == 0)
-		ft_cd(arg);
-	else if (ft_strcmp("unset", arg[0]) == 0)
-		ft_unset(arg);
-	else if (ft_strcmp("pwd", arg[0]) == 0)
+	if (ft_strcmp("exit", jobs->cmd[0]) == 0)
+		ft_exit(jobs->cmd);
+	else if (ft_strcmp("export", jobs->cmd[0]) == 0)
+		ft_export(jobs->cmd);
+	else if (ft_strcmp("echo", jobs->cmd[0]) == 0)
+		ft_echo(jobs->cmd);
+	else if (ft_strcmp("cd", jobs->cmd[0]) == 0)
+		ft_cd(jobs->cmd);
+	else if (ft_strcmp("unset", jobs->cmd[0]) == 0)
+		ft_unset(jobs->cmd);
+	else if (ft_strcmp("pwd", jobs->cmd[0]) == 0)
 		ft_pwd();
-	else if (ft_strcmp("env", arg[0]) == 0)
-		ft_env(arg);
+	else if (ft_strcmp("env", jobs->cmd[0]) == 0)
+		ft_env(jobs->cmd);
 	else
 		return (false);
-	exit (0);
 	return (true);
 }
 
-void	parent_process(char **arg)
+void	parent_process(t_job *jobs)
 {
 	pid_t	pid;
 	int		status;
@@ -59,8 +88,8 @@ void	parent_process(char **arg)
 	pid = fork();
 	if (pid == 0)
 	{
-		if (!check_builtins(arg))
-			execute(arg);
+		// if (!check_builtins(arg))
+			execute(jobs->cmd);
 	}
 	else
 	{
@@ -70,58 +99,86 @@ void	parent_process(char **arg)
 	}
 }
 
-void	child_process(char **arg)
+void	ms_pipe_exec(t_job *jobs)
 {
-	pid_t	pid;
-	int		status;
-	int		fd[2];
+	if (!check_builtins(jobs))
+		execute(jobs->cmd);
+	exit(0);
+}
 
-	status = 0;
-	pipe(fd);
+void	child_process(t_job *jobs)
+{
+	int	status;
+	int	pid;
+
 	pid = fork();
 	if (pid == 0)
+		ms_pipe_exec(jobs);
+	waitpid(pid, &status, 0); 
+	dup2(g_mini.fdin, 0);
+	dup2(g_mini.fdout, 1);
+	if (WIFEXITED(status))
+		g_mini.output_code = WEXITSTATUS(status);
+}
+
+void	create_dup(t_job *jobs, int i)
+{
+	if (i > 0)
+		dup2(g_mini.fd_pipe[i - 1][0], 0);
+	if (jobs->next)
 	{
-		close(fd[0]);
-		dup2(fd[1], STDOUT_FILENO);
-		if (!check_builtins(arg))
-			execute(arg);
+		dup2(g_mini.fd_pipe[i][1], 1);
+		if (i > 0)
+			close(g_mini.fd_pipe[i - 1][0]);
+		close(g_mini.fd_pipe[i][1]);
 	}
-	else
+	if (jobs->next == NULL)
+		dup2(g_mini.fdout, 1);
+}
+
+void	ms_pipe(t_job *jobs)
+{
+	int	i;
+	t_job	*tmp;
+
+	i = 0;
+	tmp = jobs;
+	while (tmp)
 	{
-		close(fd[1]);
-		dup2(fd[0], STDIN_FILENO);
-		waitpid(pid, &status, 0); 
-		if (WIFEXITED(status))
-			g_mini.output_code = WEXITSTATUS(status);
+		printf("Job terminated 2\n");
+		create_dup(tmp, i);
+		init_redirs(tmp);
+		child_process(tmp);
+		tmp = tmp->next;
+		i++;
 	}
 }
 
-void	ms_exec(t_token *token)
+void	ms_start_exec(t_job *jobs)
 {
+	int	count;
 	int	i;
-	int	saved_stdin;
-	t_token	*tmp;
-	char	**arg;
-
-	i = 0;
-	saved_stdin = dup(0);
-	tmp = token;
-	if (token)
+	
+	if (jobs->next == NULL)
 	{
-		while (tmp->pipe)
-		{
-			arg = merge_tokens(tmp);
-			child_process(arg);
-			ft_strarr_free(arg);
-			arg = NULL;
-			tmp = tmp->pipe;
-		}
-		arg = merge_tokens(tmp);
-		parent_process(arg);
-		dup2(saved_stdin, 0);
-		close(saved_stdin);
-		ft_strarr_free(arg);
-		arg = NULL;
+		init_redirs(jobs);
+		if (!check_builtins(jobs))
+			parent_process(jobs);
+		dup2(g_mini.fdin, 0);
+		dup2(g_mini.fdout, 1);
 	}
-	return ;
+	else
+	{
+		i = 0;
+		count = pipe_count(jobs);
+		g_mini.fd_pipe = ft_calloc(sizeof(int), count + 1);
+		while (count > 0)
+		{
+			g_mini.fd_pipe[i] = malloc(sizeof(int) * 2);
+			pipe(g_mini.fd_pipe[i]);
+			i++;
+			count--;
+		}
+		ms_pipe(jobs);
+	}
 }

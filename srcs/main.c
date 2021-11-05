@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:47:03 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/04 16:29:55 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/05 10:45:27 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,29 +25,8 @@ void	init_minishell(char **envp)
 	g_mini.output_code = SUCCESS;
 	g_mini.open_quote = false;
 	g_mini.char_quote = 0;
-}
-
-void	parse_cmds(t_token *token)
-{
-	char	**arg;
-
-	arg = merge_tokens(token);
-	if (ft_strcmp(arg[0], "export") == 0)
-		ft_export(arg);
-	else if (ft_strcmp(arg[0], "unset") == 0)
-		ft_unset(arg);
-	else if (ft_strcmp(arg[0], "env") == 0)
-		ft_env(arg);
-	else if (ft_strcmp(arg[0], "echo") == 0)
-		ft_echo(arg);
-	else if (ft_strcmp(arg[0], "pwd") == 0)
-		ft_pwd();
-	else if (ft_strcmp(arg[0], "cd") == 0)
-		ft_cd(arg);
-	else if (ft_strcmp(arg[0], "exit") == 0)
-		ft_exit(arg);
-	else
-		ms_exec(token);
+	g_mini.fdin = dup(0);
+	g_mini.fdout = dup(1);
 }
 
 void	ctrl_backslash(int sig)
@@ -77,17 +56,22 @@ void	ctrl_c(int sig)
 bool	init_exec(char *line, t_job **jobs, t_token **token)
 {
 	unex_token(line);
+	if (g_mini.is_error)
+	{
+		free (line);
+		return (false);
+	}
 	if (verify_quotes(line))
 	{
 		print_error(NULL, NULL, QUOTES, SYNTAX_ERR);
+		free (line);
 		return (false);
 	}
-	if (g_mini.is_error)
-		return (false);
 	*token = ft_args(line);
 	*token = manage_env(*token);
 	*token = init_merge(*token);
 	*jobs =	init_jobs(*token);
+	free (line);
 	return (true);
 }
 
@@ -112,9 +96,8 @@ int	main(int argc, char **argv, char **envp)
 			g_mini.char_quote = 0;
 			if (!init_exec(line, &jobs, &token))
 				continue;
-			// ms_exec(token);
-			free(line);
-			ft_free_tokens(&token);
+			ms_start_exec(jobs);
+			ft_free_stuff(&token, &jobs);
 		}
 	}
 	return (EXIT_SUCCESS);

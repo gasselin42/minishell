@@ -6,11 +6,26 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 13:36:42 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/01 16:08:55 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/05 11:02:19 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	pipe_count(t_job *jobs)
+{
+	int	count;
+	t_job	*tmp;
+	
+	tmp = jobs;
+	count = 0;
+	while (tmp->next)
+	{
+		count++;
+		tmp = tmp->next;
+	}
+	return (count);
+}
 
 void	add_cell(t_token **token, char *cmd, t_type type, t_over over)
 {

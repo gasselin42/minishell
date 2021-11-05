@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 14:04:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/04 14:52:13 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/05 09:45:41 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ char	**merge_tokens(t_token *token)
 	merge = malloc(sizeof(char *) * define_size(token));
 	while (tmp != NULL)
 	{
-		if (!(tmp->over == DONE && !(tmp->type == TEXT && tmp->cmd[0] == '\0' && (!tmp->prev || tmp->prev->over == DONE))))
+		if (!(tmp->over == DONE && !(tmp->type == TEXT && tmp->cmd[0] == '\0'
+			&& (!tmp->prev || tmp->prev->over == DONE))))
 		{
 			tmp = tmp->next;
 			continue ;

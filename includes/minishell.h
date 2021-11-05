@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:46:28 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/04 15:47:12 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/05 11:04:25 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,9 @@ typedef struct s_minishell
 	char		*heredoc_pwd;
 	char		*cwd_exec;
 	char		*path_exec;
+	int			fdin;
+	int			fdout;
+	int			**fd_pipe;
 }	t_minishell;
 
 extern t_minishell g_mini;
@@ -154,12 +157,17 @@ char	**merge_tokens(t_token *token);
 int		count_redirs(t_token *token);
 int		is_redirection(char	*cmd);
 
+void	ms_start_exec(t_job *jobs);
 void	ms_exec(t_token *token);
 void	execute(char **cmd);
 char	*find_path(const char *cmd);
 
+void	init_redirs(t_job *jobs);
+
 void	print_error(const char *v1, const char *v2, const char *v3, int code);
 
-void	ft_free_tokens(t_token **token);
+void	ft_free_stuff(t_token **token, t_job **jobs);
+
+int		pipe_count(t_job *jobs);
 
 #endif
