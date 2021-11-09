@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 13:55:37 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/09 10:17:56 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/09 15:41:58 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,4 @@ dup2 le file open au bon stdin
 ramene le saved_stdin
 
 pour le here doc:
-same mais tu prend les inputs dans le get_next_line
-
-est-ce que le pipe prend le dessus sur la redir ou l'inverse? */
+same mais tu prend les inputs dans le get_next_line*/

@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:46:28 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/09 10:20:49 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/09 16:09:49 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,9 +119,9 @@ typedef struct s_minishell
 	bool		open_quote;
 	char		char_quote;
 	char		*syntax;
-	bool		dbl_redir;
+	// bool		dbl_redir;
 	pid_t		pid;
-	char		*heredoc_pwd;
+	// char		*heredoc_pwd;
 	char		*cwd_exec;
 	char		*path_exec;
 	int			fdin;
