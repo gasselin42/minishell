@@ -1,27 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe.c                                             :+:      :+:    :+:   */
+/*   ft_str_append.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/02 11:23:04 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/04 12:18:13 by gasselin         ###   ########.fr       */
+/*   Created: 2021/11/08 10:56:09 by gasselin          #+#    #+#             */
+/*   Updated: 2021/11/08 11:01:57 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-// void	run_pipe()
-// {
-// 	int	fd[2];
-// 	int	fdd;
+char	*ft_str_append(char *str, int c)
+{
+	char	*line;
+	int		i;
 
-// 	fdd = dup(0);
-// 	pipe(fd);
-// 	g_mini.pid = fork();
-// 	if (g_mini.pid == 0)
-// 	{
-		
-// 	}
-// }
+	i = -1;
+	if (str == NULL)
+	{
+		line = ft_calloc(2, sizeof(char));
+		line[0] = c;
+		return (line);
+	}
+	line = ft_calloc(ft_strlen(str) + 2, sizeof(char));
+	while (str[++i])
+		line[i] = str[i];
+	line[i] = c;
+	free (str);
+	return (line);
+}

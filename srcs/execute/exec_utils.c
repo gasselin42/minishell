@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 14:04:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/05 09:45:41 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/08 11:14:32 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,28 @@ char	*find_path(const char *cmd)
 	return (NULL);
 }
 
+void	verify_dir(char **cmd)
+{
+	struct stat	info;
+	
+	stat(cmd[0], &info);
+	if (S_ISDIR(info.st_mode))
+	{
+		dup2(g_mini.fdin, 0);
+		dup2(g_mini.fdout, 1);
+		print_error(NULL, cmd[0], DIRECTORY, DIR_ERR);
+		exit (1);
+	}
+	return ;
+}
+
 void	execute(char **cmd)
 {	
 	g_mini.cwd_exec = getcwd(NULL, 0);
 	g_mini.output_code = SUCCESS;
 	g_mini.path_exec = find_path(cmd[0]);
-	if (cmd[0][0] && cmd[0][0] == '.' && chdir(cmd[0]) == 0)
-	{
-		chdir(g_mini.cwd_exec);
-		print_error(NULL, cmd[0], DIRECTORY, DIR_ERR);
-		return ;
-	}
+	if (ft_strchr(cmd[0], '/'))
+		verify_dir(cmd);
 	if (g_mini.path_exec == NULL)
 	{
 		print_error(NULL, cmd[0], CMD_NOT_FOUND, FILE_ERR);

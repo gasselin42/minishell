@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:47:03 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/05 10:45:27 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/09 11:56:31 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,10 @@ int	main(int argc, char **argv, char **envp)
 	init_minishell(envp);
 	// signal(SIGINT, ctrl_c);
 	// signal(SIGQUIT, SIG_IGN);
+	// line = ft_strdup("cat < Hello | cat -e | cat << Bonjour | wc -l");
+	// init_exec(line, &jobs, &token);
+	// ms_check_heredocs(token, jobs);
+	// ms_start_exec(jobs);
 	while (1)
 	{
 		line = readline("\033[0;34mminishell-1.0$ \033[0m");
@@ -96,6 +100,7 @@ int	main(int argc, char **argv, char **envp)
 			g_mini.char_quote = 0;
 			if (!init_exec(line, &jobs, &token))
 				continue;
+			ms_check_heredocs(token, jobs);
 			ms_start_exec(jobs);
 			ft_free_stuff(&token, &jobs);
 		}

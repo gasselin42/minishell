@@ -6,7 +6,7 @@
 #    By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/10 09:29:07 by gasselin          #+#    #+#              #
-#    Updated: 2021/11/04 15:17:02 by gasselin         ###   ########.fr        #
+#    Updated: 2021/11/08 11:02:34 by gasselin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,7 +61,8 @@ SRCS	= ft_memset.c \
 		ft_strarr_index.c \
 		ft_strarr_addback.c \
 		ft_strjoin_triple.c \
-		ft_strarr_iter.c
+		ft_strarr_iter.c \
+		ft_str_append.c
 
 BONUS	= ft_lstnew.c \
 		ft_lstadd_front.c \

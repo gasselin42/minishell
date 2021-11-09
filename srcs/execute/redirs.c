@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 13:55:37 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/04 16:48:58 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/09 10:17:56 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,6 @@ void	redir_input(char *next) // <
 	file = open(next, O_RDONLY);
 	dup2(file, STDIN_FILENO);
 	close(file);
-}
-
-void	redir_heredocs(t_job *jobs) // <<
-{
-	(void)jobs;
 }
 
 int	is_redirection(char	*cmd)
@@ -77,7 +72,7 @@ void	init_redirs(t_job *jobs)
 			if (ft_strcmp(jobs->redirs[i], ">>") == 0)
 				redir_append(jobs->redirs[i + 1]);
 			else if (ft_strcmp(jobs->redirs[i], "<<") == 0)
-				redir_heredocs(jobs);
+				hdoc_write(jobs);
 			else if (ft_strcmp(jobs->redirs[i], ">") == 0)
 				redir_output(jobs->redirs[i + 1]);
 			else if (ft_strcmp(jobs->redirs[i], "<") == 0)

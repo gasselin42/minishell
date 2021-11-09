@@ -6,34 +6,11 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 14:25:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/05 12:24:18 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/09 11:44:08 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// int	open_file(char *argv, int i)
-// {
-// 	int	file;
-
-// 	file = 0;
-// 	if (i == 0)
-// 		file = open(argv, O_WRONLY | O_CREAT | O_APPEND, 0777);
-// 	else if (i == 1)
-// 		file = open(argv, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-// 	else if (i == 2)
-// 		file = open(argv, O_RDONLY, 0777);
-// 	/* if (file == -1)
-// 		erreur d'ouverture de file */
-// 	return (file);
-// }
-
-// void	ms_exec(t_token *token)
-// {
-// 	int	i;
-// 	int	saved_stdin;
-// 	t_token	*tmp;
-// 	char	**arg;
 
 // 	i = 0;
 // 	saved_stdin = dup(0);
@@ -87,10 +64,7 @@ void	parent_process(t_job *jobs)
 	status = 0;
 	pid = fork();
 	if (pid == 0)
-	{
-		// if (!check_builtins(arg))
-			execute(jobs->cmd);
-	}
+		execute(jobs->cmd);
 	else
 	{
 		waitpid(pid, &status, 0);
@@ -145,7 +119,6 @@ void	ms_pipe(t_job *jobs)
 	tmp = jobs;
 	while (tmp)
 	{
-		printf("Job terminated 2\n");
 		create_dup(tmp, i);
 		init_redirs(tmp);
 		child_process(tmp);

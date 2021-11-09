@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:46:28 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/05 11:04:25 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/09 10:20:49 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <errno.h>
 # include <string.h>
 # include <fcntl.h>
+# include <sys/stat.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
@@ -88,6 +89,9 @@ typedef struct s_job
 {
 	char			**cmd;
 	char			**redirs;
+	char			*hdoc;
+	char			*hdoc_inputs;
+	int				hdoc_fd[2];
 	struct s_job	*next;
 }	t_job;
 
@@ -163,6 +167,9 @@ void	execute(char **cmd);
 char	*find_path(const char *cmd);
 
 void	init_redirs(t_job *jobs);
+void	redir_heredocs(t_job *jobs, int i);
+void	hdoc_write(t_job *jobs);
+void	ms_check_heredocs(t_token *token, t_job *jobs);
 
 void	print_error(const char *v1, const char *v2, const char *v3, int code);
 

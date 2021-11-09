@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 15:38:08 by gasselin          #+#    #+#             */
-/*   Updated: 2021/10/21 13:37:34 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/09 11:28:25 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	ft_cd(char **argv)
 	{
 		if (ft_getenv("HOME") == NULL)
 			print_error("cd", NULL, NO_HOME, GEN_ERR);
-		else if (chdir(ft_getenv("HOME=")) == -1)
+		else if (chdir(ft_getenv("HOME")) == -1)
 			print_error("cd", ft_getenv("HOME"), strerror(errno), GEN_ERR);
 		else
 			modify_env();
