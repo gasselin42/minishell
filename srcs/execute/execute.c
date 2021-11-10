@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 14:25:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/09 16:15:32 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/10 14:52:47 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,9 @@ void	parent_process(t_job *jobs)
 	pid = fork();
 	if (pid == 0)
 		execute(jobs->cmd);
-	else
-	{
-		waitpid(pid, &status, 0);
-		if (WIFEXITED(status))
-			g_mini.output_code = WEXITSTATUS(status);
-	}
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+		g_mini.output_code = WEXITSTATUS(status);
 }
 
 void	ms_pipe_exec(t_job *jobs)
@@ -95,33 +92,43 @@ void	child_process(t_job *jobs)
 		g_mini.output_code = WEXITSTATUS(status);
 }
 
-void	create_dup(t_job *jobs, int i)
+void	create_dup(t_job *jobs, t_pipe *pipes, int i)
 {
 	if (i > 0)
-		dup2(g_mini.fd_pipe[i - 1][0], 0);
+	{
+		dup2(pipes->prev_fd[0], 0);
+		close(pipes->prev_fd[0]);
+		close(pipes->prev_fd[1]);
+	}
 	if (jobs->next)
 	{
-		dup2(g_mini.fd_pipe[i][1], 1);
-		if (i > 0)
-			close(g_mini.fd_pipe[i - 1][0]);
-		close(g_mini.fd_pipe[i][1]);
+		dup2(pipes->pipe_fd[1], 1);
+		close(pipes->pipe_fd[1]);
+		close(pipes->pipe_fd[0]);
 	}
-	if (jobs->next == NULL)
-		dup2(g_mini.fdout, 1);
 }
 
 void	ms_pipe(t_job *jobs)
 {
 	int	i;
 	t_job	*tmp;
+	t_pipe	*pipes;
 
 	i = 0;
+	pipes = malloc(sizeof(t_pipe));
+	pipes->nb_pipe = pipe_count(jobs);
 	tmp = jobs;
 	while (tmp)
 	{
-		create_dup(tmp, i);
-		init_redirs(tmp);
-		child_process(tmp);
+		if (i < pipes->nb_pipe)
+			pipe(pipes->pipe_fd);
+		tmp->pid = fork();
+		if (tmp->pid == 0)
+		{
+			create_dup(tmp, pipes, i);
+			init_redirs(tmp);
+			ms_pipe_exec(tmp);
+		}
 		tmp = tmp->next;
 		i++;
 	}
@@ -129,7 +136,6 @@ void	ms_pipe(t_job *jobs)
 
 void	ms_start_exec(t_job *jobs)
 {
-	int	count;
 	int	i;
 	
 	if (jobs->next == NULL)
@@ -141,17 +147,5 @@ void	ms_start_exec(t_job *jobs)
 		dup2(g_mini.fdout, 1);
 	}
 	else
-	{
-		i = 0;
-		count = pipe_count(jobs);
-		g_mini.fd_pipe = ft_calloc(sizeof(int), count + 1);
-		while (count > 0)
-		{
-			g_mini.fd_pipe[i] = malloc(sizeof(int) * 2);
-			pipe(g_mini.fd_pipe[i]);
-			i++;
-			count--;
-		}
 		ms_pipe(jobs);
-	}
 }

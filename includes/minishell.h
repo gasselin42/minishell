@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:46:28 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/09 16:09:49 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/10 14:52:27 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,13 @@ typedef struct s_redirs
 	char	**file;
 }	t_redirs;
 
+typedef struct s_pipe
+{
+	int	nb_pipe;
+	int	pipe_fd[2];
+	int	prev_fd[2];
+}	t_pipe;
+
 typedef struct s_job
 {
 	char			**cmd;
@@ -92,6 +99,7 @@ typedef struct s_job
 	char			*hdoc;
 	char			*hdoc_inputs;
 	int				hdoc_fd[2];
+	int				pid;
 	struct s_job	*next;
 }	t_job;
 
@@ -119,9 +127,8 @@ typedef struct s_minishell
 	bool		open_quote;
 	char		char_quote;
 	char		*syntax;
-	// bool		dbl_redir;
+	bool		dbl_redir;
 	pid_t		pid;
-	// char		*heredoc_pwd;
 	char		*cwd_exec;
 	char		*path_exec;
 	int			fdin;

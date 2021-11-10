@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 14:04:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/08 11:14:32 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/10 10:59:11 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,16 @@ char	*find_path(const char *cmd)
 	char	*path;
 
 	i = 0;
-	while (g_mini.path[i])
+	if (g_mini.path != NULL)
 	{
-		path = ft_strjoin_triple(g_mini.path[i], "/", cmd);
-		if (access(path, F_OK) == 0)
-			return (path);
-		free (path);
-		i++;
+		while (g_mini.path[i])
+		{
+			path = ft_strjoin_triple(g_mini.path[i], "/", cmd);
+			if (access(path, F_OK) == 0)
+				return (path);
+			free (path);
+			i++;
+		}
 	}
 	return (NULL);
 }
@@ -45,17 +48,16 @@ void	verify_dir(char **cmd)
 }
 
 void	execute(char **cmd)
-{	
-	g_mini.cwd_exec = getcwd(NULL, 0);
+{
 	g_mini.output_code = SUCCESS;
 	g_mini.path_exec = find_path(cmd[0]);
-	if (ft_strchr(cmd[0], '/'))
-		verify_dir(cmd);
 	if (g_mini.path_exec == NULL)
 	{
-		print_error(NULL, cmd[0], CMD_NOT_FOUND, FILE_ERR);
-		return ;
+		print_error(NULL, cmd[0], NO_FLDIR, FILE_ERR);
+		exit (0);
 	}
+	if (ft_strchr(cmd[0], '/'))
+		verify_dir(cmd);
 	execve(cmd[0], cmd, g_mini.env);
 	if (ft_strchr(cmd[0], '/'))
 		print_error(NULL, cmd[0], NO_FLDIR, FILE_ERR);

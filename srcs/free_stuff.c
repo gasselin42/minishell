@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 14:06:30 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/09 10:54:10 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/10 10:56:09 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	ft_free_merge(t_token **token)
 void	ft_free_jobs(t_job **jobs)
 {
 	t_job	*tmp;
-	
+
 	if (jobs)
 	{
 		while ((*jobs) != NULL)
@@ -46,8 +46,8 @@ void	ft_free_jobs(t_job **jobs)
 
 void	ft_free_stuff(t_token **token, t_job **jobs)
 {
-	t_token *tmp;
-	
+	t_token	*tmp;
+
 	if (token)
 	{
 		ft_free_merge(token);
@@ -62,4 +62,9 @@ void	ft_free_stuff(t_token **token, t_job **jobs)
 		}
 	}
 	ft_free_jobs(jobs);
+	if (g_mini.path)
+	{
+		ft_strarr_free(g_mini.path);
+		g_mini.path = NULL;
+	}
 }
