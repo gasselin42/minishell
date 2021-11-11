@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:15:15 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/04 15:16:35 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/11 14:24:15 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	ft_strarr_iter(char **arr)
 {
 	int	i;
-	
+
 	i = 0;
 	if (arr && *arr)
 	{

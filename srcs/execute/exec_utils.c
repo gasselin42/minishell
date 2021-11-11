@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 14:04:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/10 10:59:11 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/11 14:36:08 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*find_path(const char *cmd)
 void	verify_dir(char **cmd)
 {
 	struct stat	info;
-	
+
 	stat(cmd[0], &info);
 	if (S_ISDIR(info.st_mode))
 	{
@@ -51,13 +51,13 @@ void	execute(char **cmd)
 {
 	g_mini.output_code = SUCCESS;
 	g_mini.path_exec = find_path(cmd[0]);
-	if (g_mini.path_exec == NULL)
-	{
-		print_error(NULL, cmd[0], NO_FLDIR, FILE_ERR);
-		exit (0);
-	}
 	if (ft_strchr(cmd[0], '/'))
 		verify_dir(cmd);
+	if (g_mini.path_exec == NULL)
+	{
+		print_error(NULL, cmd[0], CMD_NOT_FOUND, FILE_ERR);
+		return ;
+	}
 	execve(cmd[0], cmd, g_mini.env);
 	if (ft_strchr(cmd[0], '/'))
 		print_error(NULL, cmd[0], NO_FLDIR, FILE_ERR);
@@ -75,7 +75,7 @@ int	define_size(t_token *token)
 	while (tmp != NULL)
 	{
 		if (tmp->over == DONE && !(tmp->type == TEXT && tmp->cmd[0] == '\0'
-			&& (!tmp->prev || tmp->prev->over == DONE)))
+				&& (!tmp->prev || tmp->prev->over == DONE)))
 			size++;
 		tmp = tmp->next;
 	}
@@ -96,7 +96,7 @@ char	**merge_tokens(t_token *token)
 	while (tmp != NULL)
 	{
 		if (!(tmp->over == DONE && !(tmp->type == TEXT && tmp->cmd[0] == '\0'
-			&& (!tmp->prev || tmp->prev->over == DONE))))
+					&& (!tmp->prev || tmp->prev->over == DONE))))
 		{
 			tmp = tmp->next;
 			continue ;

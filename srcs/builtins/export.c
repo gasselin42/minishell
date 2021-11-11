@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 16:29:29 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/09 11:18:20 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/11 13:41:41 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,28 @@ static void	verify_name(char **argv)
 {
 	int		i;
 	char	**name;
+	int		equal;
 
-	i = 1;
-	while (argv[i])
+	i = 0;
+	while (argv[++i])
 	{
+		equal = 1;
+		if (!ft_strchr(argv[i], '='))
+			equal = 0;
 		name = ft_split(argv[i], '=');
 		if (ft_isdigit(name[0][0]) || ft_count_char(name[0], NAMESET) \
 			!= (int)ft_strlen(name[0]))
 			print_error("export", name[0], NO_IDENT, GEN_ERR);
 		else
 		{
-			if (name[1])
-				ft_setenv(name[0], argv[i] + ft_strlen(name[0]) + 1, 1);
+			if (ft_getenv(name[0]) && ft_strchr(argv[i], '=') && !name[1])
+				reset_env(name, equal);
+			else if (name[1] != NULL)
+				ft_setenv(name[0], argv[i] + ft_strlen(name[0]) + 1, equal);
 			else
-				ft_setenv(name[0], NULL, 1);
+				ft_setenv(name[0], NULL, equal);
 		}
 		ft_strarr_free(name);
-		i++;
 	}
 }
 

@@ -1,41 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strarr_sort.c                                   :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/19 16:39:41 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/11 14:17:28 by gasselin         ###   ########.fr       */
+/*   Created: 2021/11/11 14:30:36 by gasselin          #+#    #+#             */
+/*   Updated: 2021/11/11 14:31:10 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-void	ft_strarr_sort(char **arr, int size)
+void	ctrl_backslash(int sig)
 {
-	int		i;
-	int		j;
-	char	*tmp1;
-	char	*tmp2;
+	(void)sig;
+	printf("Quit");
+	g_mini.output_code = CTRL_B;
+}
 
-	i = 0;
-	while (i < size - 1)
-	{
-		j = i + 1;
-		while (j < size)
-		{
-			if (ft_strcmp(arr[i], arr[j]) > 0)
-			{
-				tmp1 = ft_strdup(arr[i]);
-				tmp2 = ft_strdup(arr[j]);
-				free (arr[i]);
-				free (arr[j]);
-				arr[i] = tmp2;
-				arr[j] = tmp1;
-			}
-			j++;
-		}
-		i++;
-	}
+void	ctrl_d(int sig)
+{
+	(void)sig;
+	printf("\n");
+	g_mini.output_code = CTRL_D;
+}
+
+void	ctrl_c(int sig)
+{
+	(void)sig;
+	printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	g_mini.output_code = CTRL_C;
 }

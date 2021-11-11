@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 16:27:22 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/02 10:42:28 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/11 12:04:13 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	ft_unset(char **argv)
 	int	i;
 	int	j;
 
-	i = 1;
+	i = 0;
 	g_mini.output_code = SUCCESS;
 	while (argv[i])
 	{

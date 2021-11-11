@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 13:36:42 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/05 11:02:19 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/11 14:38:34 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	pipe_count(t_job *jobs)
 {
-	int	count;
+	int		count;
 	t_job	*tmp;
-	
+
 	tmp = jobs;
 	count = 0;
 	while (tmp->next)
@@ -29,7 +29,7 @@ int	pipe_count(t_job *jobs)
 
 void	add_cell(t_token **token, char *cmd, t_type type, t_over over)
 {
-	t_token *new_token;
+	t_token	*new_token;
 	t_token	*tmp;
 
 	new_token = ft_calloc(1, sizeof(t_token));

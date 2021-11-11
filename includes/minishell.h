@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:46:28 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/10 14:52:27 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/11 14:31:52 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,13 +85,6 @@ typedef struct s_redirs
 	char	**file;
 }	t_redirs;
 
-typedef struct s_pipe
-{
-	int	nb_pipe;
-	int	pipe_fd[2];
-	int	prev_fd[2];
-}	t_pipe;
-
 typedef struct s_job
 {
 	char			**cmd;
@@ -99,7 +92,6 @@ typedef struct s_job
 	char			*hdoc;
 	char			*hdoc_inputs;
 	int				hdoc_fd[2];
-	int				pid;
 	struct s_job	*next;
 }	t_job;
 
@@ -147,8 +139,10 @@ void	ft_pwd(void);
 void	ft_exit(char **argv);
 
 char	*ft_getenv(const char *name);
-int		ft_setenv(const char *name, const char *value, int overwrite);
-void	ft_addenv(const char *name, const char *value);
+int		ft_setenv(const char *name, const char *value, int equal);
+void	ft_addenv(const char *name, const char *value, int equal);
+void	delete_entry(int i);
+void	reset_env(char **name, int equal);
 
 t_token	*init_merge(t_token *token);
 t_token	*ft_args(char *line);
@@ -174,14 +168,17 @@ void	execute(char **cmd);
 char	*find_path(const char *cmd);
 
 void	init_redirs(t_job *jobs);
+int		pipe_count(t_job *jobs);
 void	redir_heredocs(t_job *jobs, int i);
 void	hdoc_write(t_job *jobs);
 void	ms_check_heredocs(t_token *token, t_job *jobs);
 
+void	ctrl_backslash(int sig);
+void	ctrl_c(int sig);
+void	ctrl_d(int sig);
+
 void	print_error(const char *v1, const char *v2, const char *v3, int code);
 
 void	ft_free_stuff(t_token **token, t_job **jobs);
-
-int		pipe_count(t_job *jobs);
 
 #endif

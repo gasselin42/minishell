@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/22 11:55:47 by gasselin          #+#    #+#             */
-/*   Updated: 2021/10/26 09:42:10 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/11 14:23:24 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,6 @@ char	**ft_strarr_addback(char **arr, char *str)
 	dup = ft_strarr_dup(arr, 1);
 	dup[i++] = (char *)str;
 	dup[i] = NULL;
-	//ft_strarr_free((char **)arr);
+	ft_strarr_free(arr);
 	return (dup);
 }

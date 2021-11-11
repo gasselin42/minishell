@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 16:29:03 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/02 13:37:28 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/11 11:34:53 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,5 @@ void	ft_echo(char **argv)
 	ft_echo2(argv, i);
 	if (newline)
 		ft_putchar_fd('\n', STDOUT_FILENO);
+	g_mini.output_code = SUCCESS;
 }

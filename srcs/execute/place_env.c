@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 11:42:38 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/02 13:33:20 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/11 14:39:27 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*place_code(char *cmd, int *i)
 	char	*debut;
 	char	*code;
 
-	debut = ft_substr(cmd, 0, (size_t)*i);
+	debut = ft_substr(cmd, 0, *i);
 	code = ft_itoa((int)g_mini.output_code);
 	tmp = ft_strjoin_triple(debut, code, cmd + *i + 2);
 	*i = (int)(ft_strlen(debut) + ft_strlen(code) - 1);

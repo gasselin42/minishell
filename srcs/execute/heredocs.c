@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 15:10:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/09 11:55:46 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/11 14:37:04 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*join_inputs(t_job *jobs, char *input)
 {
 	char	*tmp;
-	
+
 	if (jobs->hdoc_inputs == NULL)
 		return (ft_strdup(input));
 	tmp = ft_strjoin_triple(jobs->hdoc_inputs, "\n", input);
@@ -46,7 +46,7 @@ void	read_input(t_job *jobs, int *fd)
 void	heredoc_loop(t_job *jobs, int *fd)
 {
 	char	*input;
-	
+
 	jobs->hdoc_inputs = NULL;
 	close(fd[0]);
 	while (true)
@@ -70,7 +70,7 @@ void	redir_heredocs(t_job *jobs, int i)
 	pid_t	pid;
 	int		fd[2];
 	int		status;
-	
+
 	jobs->hdoc = jobs->redirs[i];
 	pipe(fd);
 	pid = fork();
@@ -94,7 +94,7 @@ void	ms_check_heredocs(t_token *token, t_job *jobs)
 {
 	t_job	*tmp;
 	int		i;
-	
+
 	(void)token;
 	tmp = jobs;
 	while (tmp)

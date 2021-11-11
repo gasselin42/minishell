@@ -6,13 +6,13 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 13:55:37 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/09 15:41:58 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/11 14:38:01 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	redir_output(char *next) // >
+void	redir_output(char *next)
 {
 	int	file;
 
@@ -21,7 +21,7 @@ void	redir_output(char *next) // >
 	close(file);
 }
 
-void	redir_append(char *next) // >>
+void	redir_append(char *next)
 {
 	int	file;
 
@@ -30,7 +30,7 @@ void	redir_append(char *next) // >>
 	close(file);
 }
 
-void	redir_input(char *next) // <
+void	redir_input(char *next)
 {
 	int	file;
 

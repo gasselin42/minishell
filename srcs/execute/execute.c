@@ -6,34 +6,11 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 14:25:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/10 14:52:47 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/11 14:36:38 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// 	i = 0;
-// 	saved_stdin = dup(0);
-// 	tmp = token;
-// 	if (token)
-// 	{
-// 		while (tmp->pipe)
-// 		{
-// 			arg = merge_tokens(tmp);
-// 			child_process(arg);
-// 			ft_strarr_free(arg);
-// 			arg = NULL;
-// 			tmp = tmp->pipe;
-// 		}
-// 		arg = merge_tokens(tmp);
-// 		parent_process(arg);
-// 		dup2(saved_stdin, 0);
-// 		close(saved_stdin);
-// 		ft_strarr_free(arg);
-// 		arg = NULL;
-// 	}
-// 	return ;
-// }
 
 bool	check_builtins(t_job *jobs)
 {
@@ -46,7 +23,7 @@ bool	check_builtins(t_job *jobs)
 	else if (ft_strcmp("cd", jobs->cmd[0]) == 0)
 		ft_cd(jobs->cmd);
 	else if (ft_strcmp("unset", jobs->cmd[0]) == 0)
-		ft_unset(jobs->cmd);
+		ft_unset(jobs->cmd + 1);
 	else if (ft_strcmp("pwd", jobs->cmd[0]) == 0)
 		ft_pwd();
 	else if (ft_strcmp("env", jobs->cmd[0]) == 0)
@@ -65,9 +42,12 @@ void	parent_process(t_job *jobs)
 	pid = fork();
 	if (pid == 0)
 		execute(jobs->cmd);
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		g_mini.output_code = WEXITSTATUS(status);
+	else
+	{
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			g_mini.output_code = WEXITSTATUS(status);
+	}
 }
 
 void	ms_pipe_exec(t_job *jobs)
@@ -85,50 +65,40 @@ void	child_process(t_job *jobs)
 	pid = fork();
 	if (pid == 0)
 		ms_pipe_exec(jobs);
-	waitpid(pid, &status, 0); 
+	waitpid(pid, &status, 0);
 	dup2(g_mini.fdin, 0);
 	dup2(g_mini.fdout, 1);
 	if (WIFEXITED(status))
 		g_mini.output_code = WEXITSTATUS(status);
 }
 
-void	create_dup(t_job *jobs, t_pipe *pipes, int i)
+void	create_dup(t_job *jobs, int i)
 {
 	if (i > 0)
-	{
-		dup2(pipes->prev_fd[0], 0);
-		close(pipes->prev_fd[0]);
-		close(pipes->prev_fd[1]);
-	}
+		dup2(g_mini.fd_pipe[i - 1][0], 0);
 	if (jobs->next)
 	{
-		dup2(pipes->pipe_fd[1], 1);
-		close(pipes->pipe_fd[1]);
-		close(pipes->pipe_fd[0]);
+		dup2(g_mini.fd_pipe[i][1], 1);
+		if (i > 0)
+			close(g_mini.fd_pipe[i - 1][0]);
+		close(g_mini.fd_pipe[i][1]);
 	}
+	if (jobs->next == NULL)
+		dup2(g_mini.fdout, 1);
 }
 
 void	ms_pipe(t_job *jobs)
 {
-	int	i;
+	int		i;
 	t_job	*tmp;
-	t_pipe	*pipes;
 
 	i = 0;
-	pipes = malloc(sizeof(t_pipe));
-	pipes->nb_pipe = pipe_count(jobs);
 	tmp = jobs;
 	while (tmp)
 	{
-		if (i < pipes->nb_pipe)
-			pipe(pipes->pipe_fd);
-		tmp->pid = fork();
-		if (tmp->pid == 0)
-		{
-			create_dup(tmp, pipes, i);
-			init_redirs(tmp);
-			ms_pipe_exec(tmp);
-		}
+		create_dup(tmp, i);
+		init_redirs(tmp);
+		child_process(tmp);
 		tmp = tmp->next;
 		i++;
 	}
@@ -136,8 +106,9 @@ void	ms_pipe(t_job *jobs)
 
 void	ms_start_exec(t_job *jobs)
 {
+	int	count;
 	int	i;
-	
+
 	if (jobs->next == NULL)
 	{
 		init_redirs(jobs);
@@ -147,5 +118,17 @@ void	ms_start_exec(t_job *jobs)
 		dup2(g_mini.fdout, 1);
 	}
 	else
+	{
+		i = 0;
+		count = pipe_count(jobs);
+		g_mini.fd_pipe = ft_calloc(sizeof(int), count + 1);
+		while (count > 0)
+		{
+			g_mini.fd_pipe[i] = malloc(sizeof(int) * 2);
+			pipe(g_mini.fd_pipe[i]);
+			i++;
+			count--;
+		}
 		ms_pipe(jobs);
+	}
 }

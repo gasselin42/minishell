@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 16:45:44 by gasselin          #+#    #+#             */
-/*   Updated: 2021/10/25 11:02:07 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/11 14:24:30 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	**ft_strarr_dup(char **arr, int size_plus)
 {
 	char	**dup;
-	int i;
+	int		i;
 
 	i = 0;
 	if (arr)
