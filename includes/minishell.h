@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:46:28 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/11 14:31:52 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/15 14:59:57 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # define QUOTES "unclosed quote(s)"
 # define DIRECTORY "is a directory"
 # define CMD_NOT_FOUND "command not found"
+# define FILE_NAME_RQD "filename argument required"
 
 # define UNEX_PIPE "syntax error near unexpected token '|'"
 # define UNEX_PIPES "syntax error near unexpected token '||'"
@@ -79,12 +80,6 @@ typedef enum e_type
 	APPEND
 }	t_type;
 
-typedef struct s_redirs
-{
-	t_type	type;
-	char	**file;
-}	t_redirs;
-
 typedef struct s_job
 {
 	char			**cmd;
@@ -106,7 +101,6 @@ typedef struct s_token
 	pid_t			fd[2];
 	t_type			type;
 	t_over			over;
-	t_redirs		*redirs;
 }	t_token;
 
 typedef struct s_minishell
@@ -155,6 +149,7 @@ bool	verify_quotes(char *str);
 void	manage_syntax(char *str);
 int		manage_syntax3(char *str);
 void	manage_newline(void);
+bool	check_dot(char *line);
 
 t_token	*manage_env(t_token *token);
 char	*place_env(char *cmd, int *i);
@@ -173,9 +168,9 @@ void	redir_heredocs(t_job *jobs, int i);
 void	hdoc_write(t_job *jobs);
 void	ms_check_heredocs(t_token *token, t_job *jobs);
 
-void	ctrl_backslash(int sig);
 void	ctrl_c(int sig);
-void	ctrl_d(int sig);
+void	do_nothing(int sig);
+void	manage_signals(int status);
 
 void	print_error(const char *v1, const char *v2, const char *v3, int code);
 

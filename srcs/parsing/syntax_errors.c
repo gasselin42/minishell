@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 15:03:49 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/04 16:06:57 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/15 15:00:20 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ bool	verify_quotes(char *str)
 			g_mini.open_quote = false;
 		i++;
 	}
+	if (g_mini.open_quote)
+		print_error(NULL, NULL, QUOTES, SYNTAX_ERR);
 	return (g_mini.open_quote);
 }
 

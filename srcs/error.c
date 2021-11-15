@@ -6,11 +6,21 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 12:59:18 by gasselin          #+#    #+#             */
-/*   Updated: 2021/10/27 14:49:03 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/15 14:55:21 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+bool	check_dot(char *line)
+{
+	if (ft_strcmp(line, ".") == 0)
+	{
+		print_error(NULL, ".", FILE_NAME_RQD, SYNTAX_ERR);
+		return (true);
+	}
+	return (false);
+}
 
 void	print_error(const char *v1, const char *v2, const char *v3, int code)
 {

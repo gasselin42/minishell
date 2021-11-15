@@ -6,11 +6,18 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 15:10:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/11 14:37:04 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/15 11:39:23 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	exit_heredoc(int sig)
+{
+	(void)sig;
+	ft_putendl_fd("", STDERR_FILENO);
+	exit (GEN_ERR);
+}
 
 char	*join_inputs(t_job *jobs, char *input)
 {
@@ -47,6 +54,7 @@ void	heredoc_loop(t_job *jobs, int *fd)
 {
 	char	*input;
 
+	signal(SIGINT, exit_heredoc);
 	jobs->hdoc_inputs = NULL;
 	close(fd[0]);
 	while (true)
@@ -71,6 +79,7 @@ void	redir_heredocs(t_job *jobs, int i)
 	int		fd[2];
 	int		status;
 
+	signal(SIGINT, do_nothing);
 	jobs->hdoc = jobs->redirs[i];
 	pipe(fd);
 	pid = fork();

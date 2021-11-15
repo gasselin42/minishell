@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:47:03 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/11 14:33:20 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/15 15:19:47 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,8 @@ t_minishell	g_mini;
 
 void	init_minishell(char **envp)
 {
-	char	*path;
-
 	g_mini.env = ft_strarr_dup(envp, 0);
 	g_mini.env_size = ft_strarr_size(g_mini.env);
-	path = getenv("PATH");
-	g_mini.path = ft_split(path, ':');
 	g_mini.output_code = SUCCESS;
 	g_mini.open_quote = false;
 	g_mini.char_quote = 0;
@@ -29,51 +25,50 @@ void	init_minishell(char **envp)
 	g_mini.fdout = dup(1);
 }
 
-bool	init_exec(char *line, t_job **jobs, t_token **token)
+void	exec_start(char *line)
 {
-	unex_token(line);
-	if (g_mini.is_error)
-	{
-		free (line);
-		return (false);
-	}
-	if (verify_quotes(line))
-	{
-		print_error(NULL, NULL, QUOTES, SYNTAX_ERR);
-		free (line);
-		return (false);
-	}
-	*token = ft_args(line);
-	*token = manage_env(*token);
-	*token = init_merge(*token);
-	*jobs = init_jobs(*token);
-	free (line);
-	return (true);
+	t_token	*token;
+	t_job	*jobs;
+	char	*path;
+
+	path = ft_getenv("PATH");
+	g_mini.path = ft_split(path, ':');
+	g_mini.open_quote = false;
+	g_mini.char_quote = 0;
+	token = ft_args(line);
+	token = manage_env(token);
+	token = init_merge(token);
+	jobs = init_jobs(token);
+	ms_check_heredocs(token, jobs);
+	ms_start_exec(jobs);
+	ft_free_stuff(&token, &jobs);
 }
 
 void	minishell_loop(void)
 {
 	char	*line;
-	t_token	*token;
-	t_job	*jobs;
 	char	*trim_line;
 
-	while (1)
+	while (42)
 	{
 		line = readline("\033[0;34mminishell-1.0$ \033[0m");
+		if (!line)
+		{
+			ft_putendl_fd("Exit", 2);
+			exit(g_mini.output_code);
+		}
 		if (ft_strlen(line) > 0)
 			add_history(line);
 		trim_line = ft_strtrim(line, WHITESPACES);
+		free (line);
 		if (ft_strlen(trim_line) > 0)
 		{
-			g_mini.open_quote = false;
-			g_mini.char_quote = 0;
-			if (!init_exec(trim_line, &jobs, &token))
-				continue ;
-			ms_check_heredocs(token, jobs);
-			ms_start_exec(jobs);
-			ft_free_stuff(&token, &jobs);
+			unex_token(trim_line);
+			if (!g_mini.is_error && !check_dot(trim_line)
+				&& !verify_quotes(trim_line))
+				exec_start(trim_line);
 		}
+		free (trim_line);
 	}
 }
 

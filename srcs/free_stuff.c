@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 14:06:30 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/11 14:26:32 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/15 09:57:04 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	ft_free_stuff(t_token **token, t_job **jobs)
 {
 	t_token	*tmp;
 
+	ft_strarr_free(g_mini.path);
 	if (token)
 	{
 		ft_free_merge(token);

@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 14:25:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/11 14:36:38 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/15 11:28:12 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,8 @@ void	parent_process(t_job *jobs)
 	pid = fork();
 	if (pid == 0)
 		execute(jobs->cmd);
-	else
-	{
-		waitpid(pid, &status, 0);
-		if (WIFEXITED(status))
-			g_mini.output_code = WEXITSTATUS(status);
-	}
+	waitpid(pid, &status, 0);
+	manage_signals(status);
 }
 
 void	ms_pipe_exec(t_job *jobs)
@@ -68,8 +64,7 @@ void	child_process(t_job *jobs)
 	waitpid(pid, &status, 0);
 	dup2(g_mini.fdin, 0);
 	dup2(g_mini.fdout, 1);
-	if (WIFEXITED(status))
-		g_mini.output_code = WEXITSTATUS(status);
+	manage_signals(status);
 }
 
 void	create_dup(t_job *jobs, int i)
@@ -109,6 +104,8 @@ void	ms_start_exec(t_job *jobs)
 	int	count;
 	int	i;
 
+	signal(SIGINT, do_nothing);
+	signal(SIGQUIT, do_nothing);
 	if (jobs->next == NULL)
 	{
 		init_redirs(jobs);

@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 14:04:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/11 14:36:08 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/15 10:17:55 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,14 @@ void	verify_dir(char **cmd)
 void	execute(char **cmd)
 {
 	g_mini.output_code = SUCCESS;
+	g_mini.path_exec = NULL;
 	g_mini.path_exec = find_path(cmd[0]);
 	if (ft_strchr(cmd[0], '/'))
 		verify_dir(cmd);
 	if (g_mini.path_exec == NULL)
 	{
 		print_error(NULL, cmd[0], CMD_NOT_FOUND, FILE_ERR);
-		return ;
+		exit (FILE_ERR);
 	}
 	execve(cmd[0], cmd, g_mini.env);
 	if (ft_strchr(cmd[0], '/'))
