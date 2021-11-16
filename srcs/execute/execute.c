@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 14:25:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/15 11:28:12 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/16 11:43:32 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,64 +46,8 @@ void	parent_process(t_job *jobs)
 	manage_signals(status);
 }
 
-void	ms_pipe_exec(t_job *jobs)
-{
-	if (!check_builtins(jobs))
-		execute(jobs->cmd);
-	exit(0);
-}
-
-void	child_process(t_job *jobs)
-{
-	int	status;
-	int	pid;
-
-	pid = fork();
-	if (pid == 0)
-		ms_pipe_exec(jobs);
-	waitpid(pid, &status, 0);
-	dup2(g_mini.fdin, 0);
-	dup2(g_mini.fdout, 1);
-	manage_signals(status);
-}
-
-void	create_dup(t_job *jobs, int i)
-{
-	if (i > 0)
-		dup2(g_mini.fd_pipe[i - 1][0], 0);
-	if (jobs->next)
-	{
-		dup2(g_mini.fd_pipe[i][1], 1);
-		if (i > 0)
-			close(g_mini.fd_pipe[i - 1][0]);
-		close(g_mini.fd_pipe[i][1]);
-	}
-	if (jobs->next == NULL)
-		dup2(g_mini.fdout, 1);
-}
-
-void	ms_pipe(t_job *jobs)
-{
-	int		i;
-	t_job	*tmp;
-
-	i = 0;
-	tmp = jobs;
-	while (tmp)
-	{
-		create_dup(tmp, i);
-		init_redirs(tmp);
-		child_process(tmp);
-		tmp = tmp->next;
-		i++;
-	}
-}
-
 void	ms_start_exec(t_job *jobs)
 {
-	int	count;
-	int	i;
-
 	signal(SIGINT, do_nothing);
 	signal(SIGQUIT, do_nothing);
 	if (jobs->next == NULL)
@@ -115,17 +59,5 @@ void	ms_start_exec(t_job *jobs)
 		dup2(g_mini.fdout, 1);
 	}
 	else
-	{
-		i = 0;
-		count = pipe_count(jobs);
-		g_mini.fd_pipe = ft_calloc(sizeof(int), count + 1);
-		while (count > 0)
-		{
-			g_mini.fd_pipe[i] = malloc(sizeof(int) * 2);
-			pipe(g_mini.fd_pipe[i]);
-			i++;
-			count--;
-		}
 		ms_pipe(jobs);
-	}
 }

@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 13:55:37 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/11 14:38:01 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/16 11:46:21 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,3 @@ void	init_redirs(t_job *jobs)
 		}
 	}
 }
-
-/* pour les redirection:
-check si les redirections sont a NULL
-sinon open le file mentionner
-dup2 le file open au bon stdin 
-ramene le saved_stdin
-
-pour le here doc:
-same mais tu prend les inputs dans le get_next_line*/

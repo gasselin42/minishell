@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:46:28 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/15 14:59:57 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/16 11:43:57 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,12 @@ typedef enum e_type
 	APPEND
 }	t_type;
 
+typedef struct s_pipe
+{
+	int	pipe_fd[2];
+	int	prev_pipe[2];
+}	t_pipe;
+
 typedef struct s_job
 {
 	char			**cmd;
@@ -87,6 +93,8 @@ typedef struct s_job
 	char			*hdoc;
 	char			*hdoc_inputs;
 	int				hdoc_fd[2];
+	int				status;
+	pid_t			pid;
 	struct s_job	*next;
 }	t_job;
 
@@ -119,7 +127,8 @@ typedef struct s_minishell
 	char		*path_exec;
 	int			fdin;
 	int			fdout;
-	int			**fd_pipe;
+	// int			**fd_pipe;
+	int			nb_pipe;
 }	t_minishell;
 
 extern t_minishell g_mini;
@@ -160,7 +169,9 @@ int		is_redirection(char	*cmd);
 void	ms_start_exec(t_job *jobs);
 void	ms_exec(t_token *token);
 void	execute(char **cmd);
+bool	check_builtins(t_job *jobs);
 char	*find_path(const char *cmd);
+void	ms_pipe(t_job *jobs);
 
 void	init_redirs(t_job *jobs);
 int		pipe_count(t_job *jobs);

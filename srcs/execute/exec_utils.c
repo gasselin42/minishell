@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 14:04:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/15 10:17:55 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/16 11:58:15 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,17 +83,11 @@ int	define_size(t_token *token)
 	return (size + 1);
 }
 
-char	**merge_tokens(t_token *token)
+char	**merge_tokens2(t_token *tmp, char **merge, int i)
 {
-	char	**merge;
-	t_token	*tmp;
-	int		i;
 	char	*str;
 	char	*str2;
 
-	tmp = token;
-	i = 0;
-	merge = malloc(sizeof(char *) * define_size(token));
 	while (tmp != NULL)
 	{
 		if (!(tmp->over == DONE && !(tmp->type == TEXT && tmp->cmd[0] == '\0'
@@ -117,6 +111,21 @@ char	**merge_tokens(t_token *token)
 		tmp = tmp->next;
 	}
 	merge[i] = NULL;
+	return (merge);
+}
+
+char	**merge_tokens(t_token *token)
+{
+	char	**merge;
+	t_token	*tmp;
+	int		i;
+	char	*str;
+	char	*str2;
+
+	tmp = token;
+	i = 0;
+	merge = malloc(sizeof(char *) * define_size(token));
+	merge = merge_tokens2(tmp, merge, i);
 	return (merge);
 }
 
