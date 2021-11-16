@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:46:28 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/16 13:43:36 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/16 15:33:43 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,7 @@ void	hdoc_write(t_job *jobs);
 void	ms_check_heredocs(t_token *token, t_job *jobs);
 char	*join_inputs(t_job *jobs, char *input);
 
+void	set_signals(void);
 void	ctrl_c(int sig);
 void	do_nothing(int sig);
 void	manage_signals(int status);

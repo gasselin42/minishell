@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 14:04:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/16 13:39:52 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/16 15:47:42 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,19 @@ void	verify_dir(char **cmd)
 {
 	struct stat	info;
 
-	stat(cmd[0], &info);
-	if (S_ISDIR(info.st_mode))
+	if (stat(cmd[0], &info) == -1)
+	{
+		dup2(g_mini.fdin, 0);
+		dup2(g_mini.fdout, 1);
+		print_error(NULL, cmd[0], NO_FLDIR, FILE_ERR);
+		exit (FILE_ERR);
+	}
+	else if (S_ISDIR(info.st_mode))
 	{
 		dup2(g_mini.fdin, 0);
 		dup2(g_mini.fdout, 1);
 		print_error(NULL, cmd[0], DIRECTORY, DIR_ERR);
-		exit (1);
+		exit (DIR_ERR);
 	}
 }
 

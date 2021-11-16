@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:47:03 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/16 13:16:49 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/16 15:33:54 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	minishell_loop(void)
 
 	while (42)
 	{
+		set_signals();
 		line = readline("\033[0;34mminishell-1.0$ \033[0m");
 		if (!line)
 		{
@@ -78,8 +79,6 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	init_minishell(envp);
 	change_level();
-	signal(SIGINT, ctrl_c);
-	signal(SIGQUIT, SIG_IGN);
 	minishell_loop();
 	return (EXIT_SUCCESS);
 }

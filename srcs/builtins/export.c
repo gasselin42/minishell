@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 16:29:29 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/16 10:41:23 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/16 15:04:14 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	ft_export(char **argv)
 		ft_strarr_sort(sort, g_mini.env_size);
 		while (++i < g_mini.env_size)
 			ft_putendl_fd(sort[i], STDOUT_FILENO);
+		ft_strarr_free(sort);
 	}
 	else
 		verify_name(argv);

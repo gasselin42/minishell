@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 14:57:07 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/08 11:15:54 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/16 14:33:10 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ t_job	*init_jobs(t_token *token)
 	int		count;
 
 	tmp = token;
+	jobs = NULL;
 	while (tmp)
 	{
 		jobs = add_back_job(jobs);

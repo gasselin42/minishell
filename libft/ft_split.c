@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gasselin <gasselin@student.42quebec.com>   +#+  +:+       +#+        */
+/*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 09:20:54 by gasselin          #+#    #+#             */
-/*   Updated: 2021/05/10 09:21:01 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/16 14:56:15 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,21 @@ static int	ft_wordcount(char const *s, char c)
 {
 	int		count;
 	size_t	i;
+	size_t	len;
 
 	count = 0;
 	i = 0;
-	while (s[i])
+	len = ft_strlen(s);
+	if (s && s[0])
 	{
-		if (i == 0 && s[i] != c)
-			count++;
-		if (s[i] != c && s[i - 1] == c && i > 0)
-			count++;
-		i++;
+		while (i < len)
+		{
+			if (i == 0 && s[i] != c)
+				count++;
+			else if (s[i] != c && s[i - 1] == c && i > 0)
+				count++;
+			i++;
+		}
 	}
 	return (count);
 }

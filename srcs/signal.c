@@ -6,11 +6,17 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 14:30:36 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/16 13:30:06 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/16 15:33:30 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	set_signals(void)
+{
+	signal(SIGINT, ctrl_c);
+	signal(SIGQUIT, SIG_IGN);	
+}
 
 void	do_nothing(int sig)
 {
@@ -45,6 +51,5 @@ void	manage_signals(int status)
 		if (WTERMSIG(status) == SIGQUIT)
 			ft_putendl_fd("Quit", 1);
 	}
-	signal(SIGINT, ctrl_c);
-	signal(SIGQUIT, SIG_IGN);
+	set_signals();
 }
