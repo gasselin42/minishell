@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:46:28 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/16 11:43:57 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/16 13:43:36 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@
 # define CTRL_D 0
 
 # define WHITESPACES "\t\n\v\f\r "
-# define NAMESET "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_"
+# define NAMESET "ABCDEFGHIJKLMNOPQRSTUVWXYZ\
+abcdefghijklmnopqrstuvwxyz0123456789_"
 # define SYNTAX "<|>"
 
 typedef enum e_over
@@ -127,11 +128,10 @@ typedef struct s_minishell
 	char		*path_exec;
 	int			fdin;
 	int			fdout;
-	// int			**fd_pipe;
 	int			nb_pipe;
 }	t_minishell;
 
-extern t_minishell g_mini;
+extern t_minishell	g_mini;
 
 void	ft_echo(char **argv);
 void	ft_cd(char **argv);
@@ -149,7 +149,7 @@ void	reset_env(char **name, int equal);
 
 t_token	*init_merge(t_token *token);
 t_token	*ft_args(char *line);
-t_token *parse_args(char *line, int *index);
+t_token	*parse_args(char *line, int *index);
 t_job	*init_jobs(t_token *token);
 void	add_cell(t_token **token, char *cmd, t_type type, t_over over);
 
@@ -163,8 +163,10 @@ bool	check_dot(char *line);
 t_token	*manage_env(t_token *token);
 char	*place_env(char *cmd, int *i);
 char	**merge_tokens(t_token *token);
+char	*merge_cmd(char **merge);
 int		count_redirs(t_token *token);
 int		is_redirection(char	*cmd);
+int		define_size(t_token *token);
 
 void	ms_start_exec(t_job *jobs);
 void	ms_exec(t_token *token);
@@ -178,13 +180,17 @@ int		pipe_count(t_job *jobs);
 void	redir_heredocs(t_job *jobs, int i);
 void	hdoc_write(t_job *jobs);
 void	ms_check_heredocs(t_token *token, t_job *jobs);
+char	*join_inputs(t_job *jobs, char *input);
 
 void	ctrl_c(int sig);
 void	do_nothing(int sig);
 void	manage_signals(int status);
+void	exit_heredoc(int sig);
 
 void	print_error(const char *v1, const char *v2, const char *v3, int code);
 
 void	ft_free_stuff(t_token **token, t_job **jobs);
+
+void	change_level(void);
 
 #endif

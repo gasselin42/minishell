@@ -6,7 +6,7 @@
 #    By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/15 10:45:54 by gasselin          #+#    #+#              #
-#    Updated: 2021/11/16 11:41:50 by gasselin         ###   ########.fr        #
+#    Updated: 2021/11/16 13:41:28 by gasselin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,8 @@ SRCS	= srcs/main.c srcs/error.c srcs/builtins/cd.c srcs/builtins/echo.c \
 			srcs/parsing/parse_args.c srcs/parsing/syntax_errors.c srcs/free_stuff.c \
 			srcs/parsing/manage_syntax.c srcs/execute/place_env.c srcs/execute/execute.c \
 			srcs/parsing/parse_args2.c srcs/execute/heredocs.c srcs/execute/redirs.c \
-			srcs/parsing/init_jobs.c srcs/signal.c srcs/execute/ms_pipe.c
+			srcs/parsing/init_jobs.c srcs/signal.c srcs/execute/ms_pipe.c srcs/ft_utils.c \
+			srcs/execute/merge_tokens.c
 
 OBJS	= ${SRCS:.c=.o}
 

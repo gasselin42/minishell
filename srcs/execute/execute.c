@@ -6,11 +6,22 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 14:25:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/16 11:43:32 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/16 13:31:18 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*join_inputs(t_job *jobs, char *input)
+{
+	char	*tmp;
+
+	if (jobs->hdoc_inputs == NULL)
+		return (ft_strdup(input));
+	tmp = ft_strjoin_triple(jobs->hdoc_inputs, "\n", input);
+	free (jobs->hdoc_inputs);
+	return (tmp);
+}
 
 bool	check_builtins(t_job *jobs)
 {

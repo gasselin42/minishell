@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 13:55:37 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/16 11:46:21 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/16 13:20:21 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,6 @@ void	redir_input(char *next)
 	file = open(next, O_RDONLY);
 	dup2(file, STDIN_FILENO);
 	close(file);
-}
-
-int	is_redirection(char	*cmd)
-{
-	return ((ft_strcmp(cmd, ">>") == 0) || (ft_strcmp(cmd, "<<") == 0)
-		|| (ft_strcmp(cmd, ">") == 0) || (ft_strcmp(cmd, "<") == 0));
 }
 
 int	count_redirs(t_token *token)

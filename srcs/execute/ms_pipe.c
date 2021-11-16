@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 11:35:12 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/16 11:45:57 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/16 13:55:21 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	create_dup(t_job *jobs, t_pipe *data, int i)
 	}
 }
 
-void	ms_pipe_wait(t_job *jobs)
+void	ms_pipe_wait(t_job *jobs, t_pipe *pids)
 {
 	t_job	*tmp;
 	int		i;
@@ -48,6 +48,7 @@ void	ms_pipe_wait(t_job *jobs)
 		if (tmp->next)
 			tmp = tmp->next;
 	}
+	free (pids);
 }
 
 void	child_process(t_job *tmp, t_pipe *pids, int i)
@@ -83,5 +84,5 @@ void	ms_pipe(t_job *jobs)
 		pids->prev_pipe[0] = pids->pipe_fd[0];
 		pids->prev_pipe[1] = pids->pipe_fd[1];
 	}
-	ms_pipe_wait(jobs);
+	ms_pipe_wait(jobs, pids);
 }

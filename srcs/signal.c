@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 14:30:36 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/15 11:27:49 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/16 13:30:06 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,12 @@ void	do_nothing(int sig)
 	(void)sig;
 }
 
-// void	ctrl_backslash(int sig)
-// {
-// 	(void)sig;
-// 	printf("Quit");
-// 	g_mini.output_code = CTRL_B;
-// }
-
-// void	ctrl_d(int sig)
-// {
-// 	(void)sig;
-// 	printf("\n");
-// 	g_mini.output_code = CTRL_D;
-// }
+void	exit_heredoc(int sig)
+{
+	(void)sig;
+	ft_putendl_fd("", STDERR_FILENO);
+	exit (GEN_ERR);
+}
 
 void	ctrl_c(int sig)
 {

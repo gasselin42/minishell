@@ -6,29 +6,11 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 15:10:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/15 11:39:23 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/16 13:31:06 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	exit_heredoc(int sig)
-{
-	(void)sig;
-	ft_putendl_fd("", STDERR_FILENO);
-	exit (GEN_ERR);
-}
-
-char	*join_inputs(t_job *jobs, char *input)
-{
-	char	*tmp;
-
-	if (jobs->hdoc_inputs == NULL)
-		return (ft_strdup(input));
-	tmp = ft_strjoin_triple(jobs->hdoc_inputs, "\n", input);
-	free (jobs->hdoc_inputs);
-	return (tmp);
-}
 
 void	read_input(t_job *jobs, int *fd)
 {

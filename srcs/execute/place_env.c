@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 11:42:38 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/11 14:39:27 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/16 13:41:59 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,27 +53,31 @@ char	*place_code(char *cmd, int *i)
 	return (tmp);
 }
 
+void	manage_dollar(t_token **tmp)
+{
+	int	i;
+
+	i = -1;
+	while ((*tmp)->cmd[++i])
+	{
+		if ((*tmp)->cmd[i] == '$' && (*tmp)->cmd[i + 1]
+			&& ft_strchr(NAMESET, (*tmp)->cmd[i + 1]))
+			(*tmp)->cmd = place_env((*tmp)->cmd, &i);
+		else if ((*tmp)->cmd[i] == '$' && (*tmp)->cmd[i + 1]
+			&& (*tmp)->cmd[i + 1] == '?')
+			(*tmp)->cmd = place_code((*tmp)->cmd, &i);
+	}
+}
+
 t_token	*manage_env(t_token *token)
 {
 	t_token	*tmp;
-	int		i;
 
 	tmp = token;
 	while (tmp != NULL)
 	{
-		i = -1;
 		if (tmp->type != S_QUOTE && ft_strchr(tmp->cmd, '$'))
-		{
-			while (tmp->cmd[++i])
-			{
-				if (tmp->cmd[i] == '$' && tmp->cmd[i + 1]
-					&& ft_strchr(NAMESET, tmp->cmd[i + 1]))
-					tmp->cmd = place_env(tmp->cmd, &i);
-				else if (tmp->cmd[i] == '$' && tmp->cmd[i + 1]
-					&& tmp->cmd[i + 1] == '?')
-					tmp->cmd = place_code(tmp->cmd, &i);
-			}
-		}
+			manage_dollar(&tmp);
 		if (tmp->next == NULL && tmp->pipe)
 		{
 			tmp = tmp->pipe;
