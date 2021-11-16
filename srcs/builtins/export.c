@@ -6,33 +6,11 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 16:29:29 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/15 16:05:31 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/16 10:41:23 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	**ms_split(char *str, int equal)
-{
-	char	**name;
-	size_t	len;
-
-	len = 0;
-	if (equal)
-	{
-		name = ft_calloc(3, sizeof(char *));
-		while (str[len] != '=')
-			len++;
-		name[0] = ft_substr(str, 0, len);
-		name[1] = ft_strdup(ft_strnstr(str, "=", ft_strlen(str)) + 1);
-	}
-	else
-	{
-		name = ft_calloc(2, sizeof(char *));
-		name[0] = ft_strdup(str);
-	}
-	return (name);
-}
 
 static void	verify_name(char **argv)
 {
@@ -46,7 +24,7 @@ static void	verify_name(char **argv)
 		equal = 1;
 		if (!ft_strchr(argv[i], '='))
 			equal = 0;
-		name = ms_split(argv[i], equal);
+		name = ft_split(argv[i], '=');
 		if (ft_isdigit(name[0][0]) || ft_count_char(name[0], NAMESET) \
 			!= (int)ft_strlen(name[0]))
 			print_error("export", name[0], NO_IDENT, GEN_ERR);
@@ -55,7 +33,7 @@ static void	verify_name(char **argv)
 			if (ft_getenv(name[0]) && ft_strchr(argv[i], '=') && !name[1])
 				reset_env(name, equal);
 			else if (name[1] != NULL)
-				ft_setenv(name[0], name[1], equal);
+				ft_setenv(name[0], argv[i] + ft_strlen(name[0]) + 1, equal);
 			else
 				ft_setenv(name[0], NULL, equal);
 		}
