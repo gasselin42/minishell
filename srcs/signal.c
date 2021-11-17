@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 14:30:36 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/16 15:33:30 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/16 16:31:30 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	set_signals(void)
 {
 	signal(SIGINT, ctrl_c);
-	signal(SIGQUIT, SIG_IGN);	
+	signal(SIGQUIT, SIG_IGN);
 }
 
 void	do_nothing(int sig)

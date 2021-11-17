@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 15:10:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/16 13:31:06 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/17 13:57:19 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,8 @@ void	heredoc_loop(t_job *jobs, int *fd)
 		jobs->hdoc_inputs = join_inputs(jobs, input);
 		free (input);
 	}
-	jobs->hdoc_inputs = join_inputs(jobs, "");
-	ft_putstr_fd(jobs->hdoc_inputs, fd[1]);
+	ft_putendl_fd(jobs->hdoc_inputs, fd[1]);
 	free (input);
-	free (jobs->hdoc);
 	free (jobs->hdoc_inputs);
 	exit (0);
 }
@@ -68,6 +66,7 @@ void	redir_heredocs(t_job *jobs, int i)
 	if (pid == 0)
 		heredoc_loop(jobs, fd);
 	waitpid(pid, &status, 0);
+	jobs->hdoc = NULL;
 	read_input(jobs, fd);
 }
 
@@ -78,7 +77,6 @@ void	hdoc_write(t_job *jobs)
 	ft_putstr_fd(jobs->hdoc, jobs->hdoc_fd[1]);
 	close(jobs->hdoc_fd[0]);
 	close(jobs->hdoc_fd[1]);
-	free (jobs->hdoc);
 }
 
 void	ms_check_heredocs(t_token *token, t_job *jobs)

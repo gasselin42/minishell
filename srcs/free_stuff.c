@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 14:06:30 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/15 09:57:04 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/17 14:22:45 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	ft_free_merge(t_token **token)
 	{
 		free (tmp->merge_cmd);
 		ft_strarr_free(tmp->merge);
+		tmp->merge = NULL;
 		tmp = tmp->pipe;
 	}
 }
@@ -38,6 +39,11 @@ void	ft_free_jobs(t_job **jobs)
 				ft_strarr_free((*jobs)->cmd);
 			if ((*jobs)->redirs)
 				ft_strarr_free((*jobs)->redirs);
+			if ((*jobs)->hdoc)
+			{
+				free ((*jobs)->hdoc);
+				(*jobs)->hdoc = NULL;
+			}
 			free ((*jobs));
 			*jobs = tmp;
 		}

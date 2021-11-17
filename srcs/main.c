@@ -6,13 +6,22 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:47:03 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/16 15:33:54 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/17 14:13:05 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 t_minishell	g_mini;
+
+void	ms_free_line(char **line)
+{
+	if ((*line))
+	{
+		free((*line));
+		*line = NULL;
+	}
+}
 
 void	init_minishell(char **envp)
 {
@@ -25,7 +34,7 @@ void	init_minishell(char **envp)
 	g_mini.fdout = dup(1);
 }
 
-void	exec_start(char *line)
+void	exec_start(char **line)
 {
 	t_token	*token;
 	t_job	*jobs;
@@ -35,7 +44,8 @@ void	exec_start(char *line)
 	g_mini.path = ft_split(path, ':');
 	g_mini.open_quote = false;
 	g_mini.char_quote = 0;
-	token = ft_args(line);
+	token = ft_args(*line);
+	ms_free_line(line);
 	token = manage_env(token);
 	token = init_merge(token);
 	jobs = init_jobs(token);
@@ -52,7 +62,7 @@ void	minishell_loop(void)
 	while (42)
 	{
 		set_signals();
-		line = readline("\033[0;34mminishell-1.0$ \033[0m");
+		line = readline("\e[1;34mminishell-1.0$ \e[0m");
 		if (!line)
 		{
 			ft_putendl_fd("Exit", 2);
@@ -67,14 +77,14 @@ void	minishell_loop(void)
 			unex_token(trim_line);
 			if (!g_mini.is_error && !check_dot(trim_line)
 				&& !verify_quotes(trim_line))
-				exec_start(trim_line);
+				exec_start(&trim_line);
 		}
-		free (trim_line);
+		ms_free_line(&trim_line);
 	}
 }
 
 int	main(int argc, char **argv, char **envp)
-{
+{	
 	(void)argc;
 	(void)argv;
 	init_minishell(envp);
