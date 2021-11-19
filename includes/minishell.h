@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:46:28 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/17 14:10:26 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/19 11:45:53 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,6 @@ void	manage_newline(void);
 bool	check_dot(char *line);
 
 t_token	*manage_env(t_token *token);
-char	*place_env(char *cmd, int *i);
 char	**merge_tokens(t_token *token);
 char	*merge_cmd(char **merge);
 int		count_redirs(t_token *token);

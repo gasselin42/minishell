@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 13:37:26 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/16 13:42:40 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/19 10:24:47 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,6 @@ char	**merge_tokens2(t_token *tmp, char **merge, int i)
 
 	while (tmp != NULL)
 	{
-		if (!(tmp->over == DONE && !(tmp->type == TEXT && tmp->cmd[0] == '\0'
-					&& (!tmp->prev || tmp->prev->over == DONE))))
-		{
-			tmp = tmp->next;
-			continue ;
-		}
 		str = ft_strdup("");
 		merge_tokens3(&tmp, &str, &str2);
 		merge[i++] = ft_strdup(str2);

@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 14:04:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/16 15:47:42 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/19 10:48:34 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,11 @@ void	execute(char **cmd)
 	}
 	if (ft_strchr(cmd[0], '/'))
 		print_error(NULL, cmd[0], NO_FLDIR, FILE_ERR);
+	else if (ft_strcmp(cmd[0], "") == 0)
+		print_error(cmd[0], NULL, CMD_NOT_FOUND, FILE_ERR);
 	else if (execve(g_mini.path_exec, cmd, g_mini.env) == -1)
 		print_error(cmd[0], NULL, strerror(errno), errno);
+	exit(g_mini.output_code);
 }
 
 int	define_size(t_token *token)
