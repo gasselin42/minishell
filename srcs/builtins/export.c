@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 16:29:29 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/16 15:04:14 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/20 10:25:28 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	verify_name(char **argv)
 			else if (name[1] != NULL)
 				ft_setenv(name[0], argv[i] + ft_strlen(name[0]) + 1, equal);
 			else
-				ft_setenv(name[0], NULL, equal);
+				ft_setenv(name[0], "", equal);
 		}
 		ft_strarr_free(name);
 	}
@@ -52,7 +52,7 @@ void	ft_export(char **argv)
 	{
 		sort = ft_strarr_dup(g_mini.env, 0);
 		ft_strarr_sort(sort, g_mini.env_size);
-		while (++i < g_mini.env_size)
+		while (sort[++i])
 			ft_putendl_fd(sort[i], STDOUT_FILENO);
 		ft_strarr_free(sort);
 	}
