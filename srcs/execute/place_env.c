@@ -6,66 +6,20 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 11:42:38 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/19 15:31:52 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/20 09:27:09 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*place_env2(char *var, t_type type, t_token *token, int j)
+void	reset_env(char **name, int equal)
 {
-	char	*env;
-	char	**split;
-	char	*ret;
-	char	*tmp;
-	int		i;
+	int	i;
 
-	i = -1;
-	(void)token;
-	if (ft_getenv(var) == NULL)
-		return (NULL);
-	env = ft_strdup(ft_getenv(var));
-	if (type == D_QUOTE)
-		return (env);
-	split = ft_split(env, ' ');
-	ret = ft_strdup("");
-	if (env[0] == ' ' && j > 2)
-	{
-		tmp = ft_strjoin(ret, " ");
-		free (ret);
-		ret = ft_strdup(tmp);
-		free (tmp); 
-	}
-	while (split[++i + 1])
-	{
-		tmp = ft_strjoin_triple(ret, split[i], " ");
-		free (ret);
-		ret = ft_strdup(tmp);
-		free (tmp); 
-	}
-	tmp = ft_strjoin(ret, split[i]);
-	free (ret);
-	ret = ft_strdup(tmp);
-	free (tmp);
-	if ((token->cmd[j] && env[ft_strlen(env) - 1] == ' ')
-		|| (token->over == CONTINUE && (token->next->type == S_QUOTE || token->next->type == D_QUOTE)))
-	{
-		tmp = ft_strjoin(ret, " ");
-		free (ret);
-		ret = ft_strdup(tmp);
-		free (tmp);
-	}
-	free (env);
-	ft_strarr_free(split);
-	return (ret);
+	i = ft_strarr_index(g_mini.env, name[0], "=");
+	delete_entry(i);
+	ft_setenv(name[0], "", equal);
 }
-
-/*
-export A='   bonjour   je   suis  splited '
-echo $A -> 'bonjour je suis splited'
-echo Allo$A -> 'Allo bonjour je suis splited'
-echo $A"ALLO" -> 'bonjour je suis splited ALLO'
-*/
 
 char	*place_env(char *cmd, int *i, t_type type, t_token *token)
 {

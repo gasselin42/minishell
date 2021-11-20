@@ -6,19 +6,60 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 10:13:36 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/11 14:33:44 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/20 09:38:51 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	reset_env(char **name, int equal)
+char	*place_env3(t_token *token, t_env env)
 {
-	int	i;
+	while (env.split[++(env.i) + 1])
+	{
+		env.tmp = ft_strjoin_triple(env.ret, env.split[env.i], " ");
+		free (env.ret);
+		env.ret = ft_strdup(env.tmp);
+		free (env.tmp);
+	}
+	env.tmp = ft_strjoin(env.ret, env.split[env.i]);
+	free (env.ret);
+	env.ret = ft_strdup(env.tmp);
+	free (env.tmp);
+	if ((token->cmd[env.j] && env.env[ft_strlen(env.env) - 1] == ' ')
+		|| (token->over == CONTINUE && (token->next->type == S_QUOTE
+				|| token->next->type == D_QUOTE)))
+	{
+		env.tmp = ft_strjoin(env.ret, " ");
+		free (env.ret);
+		env.ret = ft_strdup(env.tmp);
+		free (env.tmp);
+	}
+	free (env.env);
+	ft_strarr_free(env.split);
+	return (env.ret);
+}
 
-	i = ft_strarr_index(g_mini.env, name[0], "=");
-	delete_entry(i);
-	ft_setenv(name[0], "", equal);
+char	*place_env2(char *var, t_type type, t_token *token, int j)
+{
+	t_env	env;
+
+	env.i = -1;
+	env.j = j;
+	if (ft_getenv(var) == NULL)
+		return (NULL);
+	env.env = ft_strdup(ft_getenv(var));
+	if (type == D_QUOTE)
+		return (env.env);
+	env.split = ft_split(env.env, ' ');
+	env.ret = ft_strdup("");
+	if (env.env[0] == ' ' && env.j > 2)
+	{
+		env.tmp = ft_strjoin(env.ret, " ");
+		free (env.ret);
+		env.ret = ft_strdup(env.tmp);
+		free (env.tmp);
+	}
+	return (place_env3(token, env));
 }
 
 void	ft_addenv(const char *name, const char *value, int equal)

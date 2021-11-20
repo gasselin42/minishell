@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:46:28 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/19 11:45:53 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/20 09:28:20 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,16 @@ typedef struct s_pipe
 	int	prev_pipe[2];
 }	t_pipe;
 
+typedef struct s_env
+{
+	char	*env;
+	char	**split;
+	char	*ret;
+	char	*tmp;
+	int		j;
+	int		i;
+}	t_env;
+
 typedef struct s_job
 {
 	char			**cmd;
@@ -146,6 +156,7 @@ int		ft_setenv(const char *name, const char *value, int equal);
 void	ft_addenv(const char *name, const char *value, int equal);
 void	delete_entry(int i);
 void	reset_env(char **name, int equal);
+char	*place_env2(char *var, t_type type, t_token *token, int j);
 
 t_token	*init_merge(t_token *token);
 t_token	*ft_args(char *line);
