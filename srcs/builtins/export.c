@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 16:29:29 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/20 10:25:28 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/22 10:01:25 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	verify_name(char **argv)
 		name = ft_split(argv[i], '=');
 		if (ft_isdigit(name[0][0]) || ft_count_char(name[0], NAMESET) \
 			!= (int)ft_strlen(name[0]))
-			print_error("export", name[0], NO_IDENT, GEN_ERR);
+			print_error("export", argv[i], NO_IDENT, GEN_ERR);
 		else
 		{
 			if (ft_getenv(name[0]) && ft_strchr(argv[i], '=') && !name[1])

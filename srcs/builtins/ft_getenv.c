@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 10:13:36 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/20 11:15:44 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/22 10:17:40 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*place_env3(t_token *token, t_env env)
 	env.ret = ft_strdup(env.tmp);
 	free (env.tmp);
 	if (env.env[ft_strlen(env.env) - 1] == ' ' && (token->cmd[env.j]
-		|| token->over == CONTINUE))
+			|| token->over == CONTINUE))
 	{
 		env.tmp = ft_strjoin(env.ret, " ");
 		free (env.ret);
@@ -36,16 +36,6 @@ char	*place_env3(t_token *token, t_env env)
 	free (env.env);
 	ft_strarr_free(env.split);
 	return (env.ret);
-}
-
-char	**split_null(void)
-{
-	char	**split;
-	
-	split = malloc(sizeof(char *) * 2);
-	split[0] = ft_strdup("");
-	split[1] = NULL;
-	return (split);
 }
 
 char	*place_env2(char *var, t_type type, t_token *token, int j)
@@ -64,7 +54,8 @@ char	*place_env2(char *var, t_type type, t_token *token, int j)
 	else
 		env.split = ft_split(env.env, ' ');
 	env.ret = ft_strdup("");
-	if (env.env[0] == ' ' && env.j > 2)
+	if (env.env[0] == ' ' && env.j > 2
+		&& ft_strlen(token->cmd) != ft_strlen(var) + 1)
 	{
 		env.tmp = ft_strjoin(env.ret, " ");
 		free (env.ret);

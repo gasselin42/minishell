@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 12:40:08 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/16 13:20:31 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/22 09:42:51 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,14 @@ void	change_level(void)
 		ft_setenv("SHLVL", nb, 1);
 		free (nb);
 	}
+}
+
+char	**split_null(void)
+{
+	char	**split;
+
+	split = malloc(sizeof(char *) * 2);
+	split[0] = ft_strdup("");
+	split[1] = NULL;
+	return (split);
 }

@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:46:28 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/20 09:28:20 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/22 09:42:01 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,5 +203,6 @@ void	print_error(const char *v1, const char *v2, const char *v3, int code);
 void	ft_free_stuff(t_token **token, t_job **jobs);
 
 void	change_level(void);
+char	**split_null(void);
 
 #endif
