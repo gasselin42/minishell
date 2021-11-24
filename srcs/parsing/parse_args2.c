@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 11:56:45 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/19 10:51:15 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/22 15:20:12 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	parse_redirs(t_token **token, char *line, int *i, int *j)
 {
-	if (!ft_iswhitespace(line[*j - 1]))
+	if (*j > 0 && !ft_iswhitespace(line[*j - 1]))
 		add_cell(token, ft_substr(line, *i, *j - *i), TEXT, DONE);
 	if (line[*j] == '>' && line[*j + 1] == '>')
 		add_cell(token, ft_substr(line, *j, 2), APPEND, DONE);

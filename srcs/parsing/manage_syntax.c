@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 10:19:41 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/01 16:49:41 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/22 16:02:05 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ int	manage_syntax3(char *str)
 
 	trim = ft_strtrim((const char *)str + 1, WHITESPACES);
 	i = (int)(ft_strlen(str) - ft_strlen(trim));
-	if (trim[0] == '|' && trim[1] == '|')
+	if (str[0] == '|')
+		;
+	else if (trim[0] == '|' && trim[1] == '|')
 		print_error(NULL, NULL, UNEX_PIPES, SYNTAX_ERR);
 	else if (trim[0] == '|')
 		print_error(NULL, NULL, UNEX_PIPE, SYNTAX_ERR);
@@ -47,10 +49,6 @@ int	manage_syntax3(char *str)
 		print_error(NULL, NULL, UNEX_REDIRS_L, SYNTAX_ERR);
 	else if (trim[0] == '<')
 		print_error(NULL, NULL, UNEX_REDIR_L, SYNTAX_ERR);
-	else if (trim[0] == ';' && trim[1] == ';')
-		print_error(NULL, NULL, UNEX_SEMICS, SYNTAX_ERR);
-	else if (trim[0] == ';')
-		print_error(NULL, NULL, UNEX_SEMIC, SYNTAX_ERR);
 	free (trim);
 	return (i);
 }

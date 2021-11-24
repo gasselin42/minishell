@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 13:55:37 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/16 13:20:21 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/22 15:55:22 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,11 @@ void	redir_input(char *next)
 	int	file;
 
 	file = open(next, O_RDONLY);
+	if (file == -1)
+	{
+		print_error(next, NULL, NO_FLDIR, GEN_ERR);
+		return ;
+	}
 	dup2(file, STDIN_FILENO);
 	close(file);
 }
@@ -59,6 +64,7 @@ void	init_redirs(t_job *jobs)
 	int	i;
 
 	i = 0;
+	g_mini.is_error = 0;
 	if (jobs->redirs)
 	{
 		while (jobs->redirs[i])

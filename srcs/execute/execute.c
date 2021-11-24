@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 14:25:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/16 13:31:18 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/22 15:56:09 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,11 @@ void	ms_start_exec(t_job *jobs)
 	if (jobs->next == NULL)
 	{
 		init_redirs(jobs);
-		if (!check_builtins(jobs))
-			parent_process(jobs);
+		if (g_mini.is_error)
+			return ;
+		if (jobs->cmd && jobs->cmd[0])
+			if (!check_builtins(jobs))
+				parent_process(jobs);
 		dup2(g_mini.fdin, 0);
 		dup2(g_mini.fdout, 1);
 	}

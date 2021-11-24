@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 10:13:36 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/22 10:17:40 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/24 17:32:12 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,14 +73,14 @@ void	ft_addenv(const char *name, const char *value, int equal)
 	env = ft_strarr_dup(g_mini.env, 1);
 	ft_strarr_free(g_mini.env);
 	g_mini.env = env;
-	g_mini.env[g_mini.env_size] = ft_strdup(name);
+	g_mini.env[ft_strarr_size(g_mini.env)] = ft_strdup(name);
 	if (equal)
 	{
-		free (g_mini.env[g_mini.env_size]);
 		str = ft_strjoin_triple(name, "=", value);
-		g_mini.env[g_mini.env_size] = str;
+		free (g_mini.env[ft_strarr_size(g_mini.env) - 1]);
+		g_mini.env[ft_strarr_size(g_mini.env) - 1] = ft_strdup(str);
+		free (str);
 	}
-	g_mini.env[g_mini.env_size + 1] = NULL;
 	g_mini.env_size = ft_strarr_size(g_mini.env);
 }
 

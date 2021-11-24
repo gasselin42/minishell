@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 11:35:12 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/18 12:07:24 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/22 16:04:03 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ void	child_process(t_job *tmp, t_pipe *pids, int i)
 {
 	create_dup(tmp, pids, i);
 	init_redirs(tmp);
+	if (g_mini.is_error)
+		exit (g_mini.output_code);
 	ms_pipe_exec(tmp);
 }
 
