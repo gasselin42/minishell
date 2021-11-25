@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 10:13:36 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/25 11:26:15 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/25 14:43:22 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ char	*place_env3(t_token *token, t_env env)
 	free (env.ret);
 	env.ret = ft_strdup(env.tmp);
 	free (env.tmp);
-	if (env.env[ft_strlen(env.env) - 1] == ' ' && (token->cmd[env.j]
-			|| token->over == CONTINUE))
+	if (ft_strlen(env.env) > 0 && env.env[ft_strlen(env.env) - 1] == ' '
+		&& (token->cmd[env.j] || token->over == CONTINUE))
 	{
 		env.tmp = ft_strjoin(env.ret, " ");
 		free (env.ret);

@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 14:25:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/22 15:56:09 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/25 15:34:07 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*join_inputs(t_job *jobs, char *input)
 bool	check_builtins(t_job *jobs)
 {
 	if (ft_strcmp("exit", jobs->cmd[0]) == 0)
-		ft_exit(jobs->cmd);
+		ft_exit(jobs);
 	else if (ft_strcmp("export", jobs->cmd[0]) == 0)
 		ft_export(jobs->cmd);
 	else if (ft_strcmp("echo", jobs->cmd[0]) == 0)

@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 15:10:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/17 13:57:19 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/25 15:29:07 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,11 @@ void	hdoc_write(t_job *jobs)
 	close(jobs->hdoc_fd[1]);
 }
 
-void	ms_check_heredocs(t_token *token, t_job *jobs)
+void	ms_check_heredocs(t_job *jobs)
 {
 	t_job	*tmp;
 	int		i;
 
-	(void)token;
 	tmp = jobs;
 	while (tmp)
 	{

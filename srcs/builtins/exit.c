@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 16:29:23 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/16 14:27:03 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/25 15:41:25 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,25 +63,24 @@ int	check_limits(char *str)
 	return (0);
 }
 
-void	ft_exit(char **argv)
+void	ft_exit(t_job *jobs)
 {
 	ft_putendl_fd("exit", STDOUT_FILENO);
-	if (!argv[1])
+	if (!jobs->cmd[1])
 		g_mini.output_code = SUCCESS;
-	else if (!is_number(argv[1]))
-		print_error("exit", argv[1], NUM_ERR, EXIT_ERR);
-	else if (argv[2])
+	else if (!is_number(jobs->cmd[1]))
+		print_error("exit", jobs->cmd[1], NUM_ERR, EXIT_ERR);
+	else if (jobs->cmd[2])
 	{
 		print_error("exit", NULL, ARGS_ERR, GEN_ERR);
 		return ;
 	}
-	else if (check_limits(argv[1]))
-		print_error("exit", argv[1], NUM_ERR, EXIT_ERR);
+	else if (check_limits(jobs->cmd[1]))
+		print_error("exit", jobs->cmd[1], NUM_ERR, EXIT_ERR);
 	else
-		g_mini.output_code = ft_atoi_64(argv[1]) % 256;
+		g_mini.output_code = ft_atoi_64(jobs->cmd[1]) % 256;
 	ft_strarr_free(g_mini.env);
-	ft_strarr_free(g_mini.path);
-	ft_strarr_free(argv);
+	ft_free_jobs(&jobs);
 	rl_clear_history();
 	exit ((int)g_mini.output_code);
 }

@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 11:56:45 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/22 15:20:12 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/25 16:10:05 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,21 +35,21 @@ void	parse_redirs(t_token **token, char *line, int *i, int *j)
 
 void	parse_quotes(t_token **token, char *line, int *i, int *j)
 {
-	t_type	type;
-	t_over	over;
+	t_type		type;
+	t_over		over;
+	t_quotes	quotes;
 
 	over = DONE;
-	g_mini.open_quote = true;
-	g_mini.char_quote = line[*j];
+	quotes = init_quotes(true, line[*j]);
 	type = S_QUOTE;
 	if (line[*j] == 34)
 		type = D_QUOTE;
 	*j += 1;
 	*i = *j;
-	while (line[*j] && g_mini.open_quote)
+	while (line[*j] && quotes.open_quote)
 	{
-		if (g_mini.open_quote && line[*j] == g_mini.char_quote)
-			g_mini.open_quote = false;
+		if (quotes.open_quote && line[*j] == quotes.char_quote)
+			quotes.open_quote = false;
 		*j += 1;
 	}
 	if (line[*j] && (!ft_iswhitespace(line[*j]) && line[*j] != '|'))

@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 13:37:26 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/19 10:24:47 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/25 13:47:04 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ char	**merge_tokens2(t_token *tmp, char **merge, int i)
 	{
 		str = ft_strdup("");
 		merge_tokens3(&tmp, &str, &str2);
-		merge[i++] = ft_strdup(str2);
+		if (str2[0] != '\0' || tmp->type == D_QUOTE || tmp->type == S_QUOTE)
+			merge[i++] = ft_strdup(str2);
 		free (str2);
 		tmp = tmp->next;
 	}
@@ -45,13 +46,11 @@ char	**merge_tokens2(t_token *tmp, char **merge, int i)
 char	**merge_tokens(t_token *token)
 {
 	char	**merge;
-	t_token	*tmp;
 	int		i;
 
-	tmp = token;
 	i = 0;
 	merge = malloc(sizeof(char *) * define_size(token));
-	merge = merge_tokens2(tmp, merge, i);
+	merge = merge_tokens2(token, merge, i);
 	return (merge);
 }
 

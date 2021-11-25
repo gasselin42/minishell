@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 10:19:41 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/22 16:02:05 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/25 16:20:52 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	manage_syntax2(char *trim)
 		print_error(NULL, NULL, UNEX_SEMIC, SYNTAX_ERR);
 }
 
-void	manage_syntax(char *str)
+bool	manage_syntax(char *str)
 {
 	char	*trim;
 
@@ -75,7 +75,6 @@ void	manage_syntax(char *str)
 		|| (str[0] == '<' && str[1] == '<')
 		|| (str[0] == '>' && str[1] == '>'))
 	{
-		g_mini.dbl_redir = true;
 		trim = ft_strtrim((const char *)str + 2, WHITESPACES);
 		if (str[0] == '<' && str[1] == '>' && !ft_strchr("<|>", trim[0]))
 			print_error(NULL, NULL, UNEX_REDIRS_LR, SYNTAX_ERR);
@@ -90,5 +89,7 @@ void	manage_syntax(char *str)
 		else
 			manage_syntax2(trim);
 		free (trim);
+		return (true);
 	}
+	return (false);
 }

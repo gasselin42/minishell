@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 15:03:49 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/15 15:00:20 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/25 16:21:48 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,51 +14,56 @@
 
 bool	verify_quotes(char *str)
 {
-	int	i;
+	int			i;
+	t_quotes	quotes;
 
 	i = 0;
-	g_mini.open_quote = false;
+	quotes = init_quotes(false, 0);
 	while (str[i])
 	{
-		if (g_mini.open_quote == false && (str[i] == 34 || str[i] == 39))
+		if (quotes.open_quote == false && (str[i] == 34 || str[i] == 39))
 		{
-			g_mini.open_quote = true;
-			g_mini.char_quote = str[i];
+			quotes.open_quote = true;
+			quotes.char_quote = str[i];
 		}
-		else if (g_mini.open_quote == true && str[i] == g_mini.char_quote)
-			g_mini.open_quote = false;
+		else if (quotes.open_quote == true && str[i] == quotes.char_quote)
+			quotes.open_quote = false;
 		i++;
 	}
-	if (g_mini.open_quote)
+	if (quotes.open_quote)
 		print_error(NULL, NULL, QUOTES, SYNTAX_ERR);
-	return (g_mini.open_quote);
+	return (quotes.open_quote);
 }
 
 int	unex_token3(int i)
 {
-	manage_syntax(g_mini.syntax + i);
-	if (g_mini.is_error == 0 && !g_mini.dbl_redir)
+	bool	dbl_redir;
+
+	dbl_redir = manage_syntax(g_mini.syntax + i);
+	if (g_mini.is_error == 0 && !dbl_redir)
 		i += manage_syntax3(g_mini.syntax + i);
 	return (i);
 }
 
 void	unex_token2(void)
 {
-	int	i;
+	int			i;
+	t_quotes	quotes;
 
 	i = -1;
+	quotes = init_quotes(false, 0);
 	while (g_mini.syntax[++i] && !g_mini.is_error)
 	{
-		if (g_mini.open_quote == false && (g_mini.syntax[i] == 34
+		if (quotes.open_quote == false && (g_mini.syntax[i] == 34
 				|| g_mini.syntax[i] == 39))
 		{
-			g_mini.open_quote = true;
-			g_mini.char_quote = g_mini.syntax[i];
+			quotes.open_quote = true;
+			quotes.char_quote = g_mini.syntax[i];
 		}
-		else if (g_mini.open_quote == true
-			&& g_mini.syntax[i] == g_mini.char_quote)
-			g_mini.open_quote = false;
-		else if (!g_mini.open_quote && ft_strchr(SYNTAX, g_mini.syntax[i]))
+		else if (quotes.open_quote == true
+			&& g_mini.syntax[i] == quotes.char_quote)
+			quotes.open_quote = false;
+		else if (!quotes.open_quote && ft_strchr(SYNTAX, g_mini.syntax[i]))
 			i = unex_token3(i);
 	}
 }
@@ -79,8 +84,6 @@ void	unex_token1(char *str)
 void	unex_token(char *str)
 {
 	g_mini.is_error = 0;
-	g_mini.open_quote = false;
-	g_mini.dbl_redir = false;
 	g_mini.syntax = ft_strtrim((const char *)str, WHITESPACES);
 	if (g_mini.syntax[0] && g_mini.syntax[0] == '|')
 	{

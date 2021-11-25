@@ -6,11 +6,20 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/22 10:43:09 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/03 11:43:10 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/25 16:08:17 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_quotes	init_quotes(bool open_quote, char char_quote)
+{
+	t_quotes	quotes;
+
+	quotes.open_quote = open_quote;
+	quotes.char_quote = char_quote;
+	return (quotes);
+}
 
 char	**ft_trim_args(char **arr)
 {

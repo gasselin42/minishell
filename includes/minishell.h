@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:46:28 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/25 10:22:02 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/25 16:25:40 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,12 @@ typedef struct s_pipe
 	int	prev_pipe[2];
 }	t_pipe;
 
+typedef struct s_quotes
+{
+	bool	open_quote;
+	char	char_quote;
+}	t_quotes;
+
 typedef struct s_env
 {
 	char	*env;
@@ -126,83 +132,82 @@ typedef struct s_minishell
 {
 	char		**env;
 	char		**path;
-	int			env_size;
 	long int	output_code;
-	int			is_error;
-	bool		open_quote;
-	char		char_quote;
-	char		*syntax;
-	bool		dbl_redir;
-	pid_t		pid;
-	char		*cwd_exec;
-	char		*path_exec;
 	int			fdin;
 	int			fdout;
-	int			nb_pipe;
+	char		*syntax;
+	int			is_error;
+	int			env_size;
 }	t_minishell;
 
 extern t_minishell	g_mini;
 
-void	ft_echo(char **argv);
-void	ft_cd(char **argv);
-void	ft_env(char **argv);
-void	ft_export(char **argv);
-void	ft_unset(char **argv);
-void	ft_pwd(void);
-void	ft_exit(char **argv);
+void		ft_echo(char **argv);
+void		ft_cd(char **argv);
+void		ft_env(char **argv);
+void		ft_export(char **argv);
+void		ft_unset(char **argv);
+void		ft_pwd(void);
+void		ft_exit(t_job *jobs);
 
-char	*ft_getenv(const char *name);
-int		ft_setenv(const char *name, const char *value, int equal);
-void	ft_addenv(const char *name, const char *value, int equal);
-void	delete_entry(int i);
-void	reset_env(char **name, int equal);
-char	*place_env2(char *var, t_type type, t_token *token, int j);
+char		*ft_getenv(const char *name);
+int			ft_setenv(const char *name, const char *value, int equal);
+void		ft_addenv(const char *name, const char *value, int equal);
+void		delete_entry(int i);
+void		reset_env(char **name, int equal);
+char		*place_env2(char *var, t_type type, t_token *token, int j);
 
-t_token	*init_merge(t_token *token);
-t_token	*ft_args(char *line);
-t_token	*parse_args(char *line, int *index);
-t_job	*init_jobs(t_token *token);
-void	add_cell(t_token **token, char *cmd, t_type type, t_over over);
+t_token		*init_merge(t_token *token);
+t_token		*ft_args(char *line);
+t_token		*parse_args(char *line, int *index);
+t_job		*init_jobs(t_token *token);
+void		add_cell(t_token **token, char *cmd, t_type type, t_over over);
+t_quotes	init_quotes(bool open_quote, char char_quote);
 
-void	unex_token(char *str);
-bool	verify_quotes(char *str);
-void	manage_syntax(char *str);
-int		manage_syntax3(char *str);
-void	manage_newline(void);
-bool	check_dot(char *line);
+void		unex_token(char *str);
+bool		verify_quotes(char *str);
+bool		manage_syntax(char *str);
+int			manage_syntax3(char *str);
+void		manage_newline(void);
+bool		check_dot(char *line);
 
-t_token	*manage_env(t_token *token);
-char	**merge_tokens(t_token *token);
-char	*merge_cmd(char **merge);
-int		count_redirs(t_token *token);
-int		is_redirection(char	*cmd);
-int		define_size(t_token *token);
+t_token		*manage_env(t_token *token);
+char		**merge_tokens(t_token *token);
+char		*merge_cmd(char **merge);
+int			count_redirs(t_token *token);
+int			is_redirection(char	*cmd);
+int			define_size(t_token *token);
 
-void	ms_start_exec(t_job *jobs);
-void	ms_exec(t_token *token);
-void	execute(char **cmd);
-bool	check_builtins(t_job *jobs);
-char	*find_path(const char *cmd);
-void	ms_pipe(t_job *jobs);
+void		ms_start_exec(t_job *jobs);
+void		ms_exec(t_token *token);
+void		execute(char **cmd);
+bool		check_builtins(t_job *jobs);
+char		*find_path(const char *cmd);
+void		ms_pipe(t_job *jobs);
+void		ms_pipe_wait(t_job *jobs, t_pipe *pids, int nb_pipe);
 
-void	init_redirs(t_job *jobs);
-int		pipe_count(t_job *jobs);
-void	redir_heredocs(t_job *jobs, int i);
-void	hdoc_write(t_job *jobs);
-void	ms_check_heredocs(t_token *token, t_job *jobs);
-char	*join_inputs(t_job *jobs, char *input);
+void		init_redirs(t_job *jobs);
+int			pipe_count(t_job *jobs);
+void		redir_heredocs(t_job *jobs, int i);
+void		hdoc_write(t_job *jobs);
+void		ms_check_heredocs(t_job *jobs);
+char		*join_inputs(t_job *jobs, char *input);
 
-void	set_signals(void);
-void	ctrl_c(int sig);
-void	do_nothing(int sig);
-void	manage_signals(int status);
-void	exit_heredoc(int sig);
+void		set_signals(void);
+void		ctrl_c(int sig);
+void		ctrl_d(void);
+void		do_nothing(int sig);
+void		manage_signals(int status);
+void		exit_heredoc(int sig);
 
-void	print_error(const char *v1, const char *v2, const char *v3, int code);
+void		print_error(const char *v1, const char *v2, const char *v3, \
+						int code);
 
-void	ft_free_stuff(t_token **token, t_job **jobs);
+void		ft_free_stuff(t_token **token, t_job **jobs);
+void		ft_free_jobs(t_job **jobs);
+void		ft_free_token(t_token **token);
 
-void	change_level(void);
-char	**split_null(void);
+void		change_level(void);
+char		**split_null(void);
 
 #endif

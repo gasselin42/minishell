@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 14:04:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/19 10:48:34 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/25 16:26:35 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,15 @@ void	verify_dir(char **cmd)
 
 void	execute(char **cmd)
 {
+	char	*path_exec;
+
 	g_mini.output_code = SUCCESS;
-	g_mini.path_exec = NULL;
-	g_mini.path_exec = find_path(cmd[0]);
+	path_exec = NULL;
+	path_exec = find_path(cmd[0]);
 	execve(cmd[0], cmd, g_mini.env);
 	if (ft_strchr(cmd[0], '/'))
 		verify_dir(cmd);
-	if (g_mini.path_exec == NULL)
+	if (path_exec == NULL)
 	{
 		print_error(NULL, cmd[0], CMD_NOT_FOUND, FILE_ERR);
 		exit (FILE_ERR);
@@ -69,7 +71,7 @@ void	execute(char **cmd)
 		print_error(NULL, cmd[0], NO_FLDIR, FILE_ERR);
 	else if (ft_strcmp(cmd[0], "") == 0)
 		print_error(cmd[0], NULL, CMD_NOT_FOUND, FILE_ERR);
-	else if (execve(g_mini.path_exec, cmd, g_mini.env) == -1)
+	else if (execve(path_exec, cmd, g_mini.env) == -1)
 		print_error(cmd[0], NULL, strerror(errno), errno);
 	exit(g_mini.output_code);
 }
