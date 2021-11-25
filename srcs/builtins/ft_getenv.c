@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 10:13:36 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/24 17:32:12 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/25 11:26:15 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,11 +117,15 @@ char	*ft_getenv(const char *name)
 	size = ft_strlen(str);
 	while (g_mini.env[i] != NULL)
 	{
-		if (ft_strncmp(g_mini.env[i], name, size) == 0
-			|| ft_strncmp(g_mini.env[i], str, size) == 0)
+		if (ft_strncmp(g_mini.env[i], str, size) == 0)
 		{
 			free (str);
 			return (g_mini.env[i] + size);
+		}
+		if (ft_strncmp(g_mini.env[i], name, size) == 0)
+		{
+			free (str);
+			return (g_mini.env[i] + (size - 1));
 		}
 		i++;
 	}

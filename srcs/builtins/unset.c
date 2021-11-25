@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 16:27:22 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/24 17:35:41 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/25 10:33:27 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	delete_entry(int i)
 
 	j = 0;
 	k = 0;
-	arr = ft_calloc(ft_strarr_size(g_mini.env), sizeof(char *));
+	arr = (char **)ft_calloc(ft_strarr_size(g_mini.env), sizeof(char *));
 	while (j < ft_strarr_size(g_mini.env))
 	{
 		if (j != i)

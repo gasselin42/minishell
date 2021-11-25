@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 09:13:23 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/24 17:10:04 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/25 10:47:51 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ size_t	ft_strlen(const char *s)
 	count = 0;
 	if (!s)
 		return (0);
-	while (s[count])
+	while (s[count] != '\0')
 		count++;
 	return (count);
 }

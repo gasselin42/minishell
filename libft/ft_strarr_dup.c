@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 16:45:44 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/24 17:13:03 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/25 11:26:42 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,5 @@ char	**ft_strarr_dup(char **arr, int size_plus)
 			i++;
 		}
 	}
-	// dup[i] = NULL;
 	return (dup);
 }

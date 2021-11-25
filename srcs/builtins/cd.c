@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 15:38:08 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/19 11:24:18 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/25 11:26:04 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,12 @@ void	modify_env(void)
 		print_error("cd", NULL, strerror(errno), GEN_ERR);
 		return ;
 	}
-	pwd = ft_getenv("PWD");
+	pwd = ft_strdup(ft_getenv("PWD"));
 	if (pwd)
+	{
 		ft_setenv("OLDPWD", pwd, 1);
+		free (pwd);
+	}
 	ft_setenv("PWD", cwd, 1);
 	free (cwd);
 }
