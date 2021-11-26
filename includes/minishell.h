@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:46:28 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/25 16:25:40 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/26 11:48:00 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,9 +135,7 @@ typedef struct s_minishell
 	long int	output_code;
 	int			fdin;
 	int			fdout;
-	char		*syntax;
 	int			is_error;
-	int			env_size;
 }	t_minishell;
 
 extern t_minishell	g_mini;
@@ -168,7 +166,7 @@ void		unex_token(char *str);
 bool		verify_quotes(char *str);
 bool		manage_syntax(char *str);
 int			manage_syntax3(char *str);
-void		manage_newline(void);
+void		manage_newline(char *syntax);
 bool		check_dot(char *line);
 
 t_token		*manage_env(t_token *token);

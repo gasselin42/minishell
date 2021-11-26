@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 16:27:22 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/25 10:33:27 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/26 11:47:48 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	delete_entry(int i)
 	}
 	ft_strarr_free(g_mini.env);
 	g_mini.env = arr;
-	g_mini.env_size = ft_strarr_size(g_mini.env);
 }
 
 void	ft_unset(char **argv)

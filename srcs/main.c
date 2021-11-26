@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:47:03 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/25 16:13:58 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/26 11:47:57 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	ms_free_line(char **line)
 void	init_minishell(char **envp)
 {
 	g_mini.env = ft_strarr_dup(envp, 0);
-	g_mini.env_size = ft_strarr_size(g_mini.env);
 	g_mini.output_code = SUCCESS;
 	g_mini.fdin = dup(0);
 	g_mini.fdout = dup(1);

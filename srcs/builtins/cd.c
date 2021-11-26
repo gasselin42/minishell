@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 15:38:08 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/25 11:26:04 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/26 11:43:15 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,9 @@ void	ft_cd(char **argv)
 	}
 	else
 	{
-		if (chdir(argv[1]) == -1)
+		if (argv[1][0] == '\0')
+			;
+		else if (chdir(argv[1]) == -1)
 			print_error("cd", argv[1], strerror(errno), GEN_ERR);
 		else
 			modify_env();

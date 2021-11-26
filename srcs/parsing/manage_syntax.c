@@ -6,23 +6,23 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 10:19:41 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/25 16:20:52 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/26 11:41:14 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	manage_newline(void)
+void	manage_newline(char *syntax)
 {
 	size_t	i;
 
-	i = ft_strlen(g_mini.syntax) - 1;
-	if (!ft_strchr_rev(g_mini.syntax, g_mini.syntax[i]))
+	i = ft_strlen(syntax) - 1;
+	if (!ft_strchr_rev(syntax, syntax[i]))
 	{
 		if (i < 2)
 			print_error(NULL, NULL, UNEX_NEWLINE, SYNTAX_ERR);
 	}
-	else if (ft_strchr("<|>", g_mini.syntax[i]))
+	else if (ft_strchr("<|>", syntax[i]))
 		print_error(NULL, NULL, UNEX_NEWLINE, SYNTAX_ERR);
 }
 
