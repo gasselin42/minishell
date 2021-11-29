@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:46:28 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/26 11:48:00 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/29 16:13:13 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@
 # define EXIT_ERR 255
 
 # define CTRL_B 131
-# define CTRL_C 1
+# define CTRL_C 130
 # define CTRL_D 0
 
 # define WHITESPACES "\t\n\v\f\r "
@@ -109,9 +109,10 @@ typedef struct s_job
 	char			**redirs;
 	char			*hdoc;
 	char			*hdoc_inputs;
-	int				hdoc_fd[2];
+	int				fd[2];
 	int				status;
 	pid_t			pid;
+	struct s_job	*prev;
 	struct s_job	*next;
 }	t_job;
 
@@ -178,17 +179,17 @@ int			define_size(t_token *token);
 
 void		ms_start_exec(t_job *jobs);
 void		ms_exec(t_token *token);
-void		execute(char **cmd);
+void		execute(char **cmd, t_job *job_head);
 bool		check_builtins(t_job *jobs);
 char		*find_path(const char *cmd);
 void		ms_pipe(t_job *jobs);
-void		ms_pipe_wait(t_job *jobs, t_pipe *pids, int nb_pipe);
+void		ms_pipe_wait(t_job *jobs, int nb_pipe);
 
 void		init_redirs(t_job *jobs);
 int			pipe_count(t_job *jobs);
-void		redir_heredocs(t_job *jobs, int i);
+int			redir_heredocs(t_job *jobs, t_job *job_head, char *limiter);
 void		hdoc_write(t_job *jobs);
-void		ms_check_heredocs(t_job *jobs);
+int			ms_check_heredocs(t_job *jobs);
 char		*join_inputs(t_job *jobs, char *input);
 
 void		set_signals(void);

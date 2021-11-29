@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 14:25:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/25 15:34:07 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/29 15:32:27 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,25 +52,42 @@ void	parent_process(t_job *jobs)
 	status = 0;
 	pid = fork();
 	if (pid == 0)
-		execute(jobs->cmd);
+		execute(jobs->cmd, jobs);
 	waitpid(pid, &status, 0);
 	manage_signals(status);
+}
+
+void	init_pipes(t_job *jobs)
+{
+	while (jobs)
+	{
+		pipe(jobs->fd);
+		jobs = jobs->next;
+	}
 }
 
 void	ms_start_exec(t_job *jobs)
 {
 	signal(SIGINT, do_nothing);
 	signal(SIGQUIT, do_nothing);
+	init_pipes(jobs);
+	if (ms_check_heredocs(jobs))
+		return ;
 	if (jobs->next == NULL)
 	{
 		init_redirs(jobs);
 		if (g_mini.is_error)
 			return ;
 		if (jobs->cmd && jobs->cmd[0])
-			if (!check_builtins(jobs))
-				parent_process(jobs);
-		dup2(g_mini.fdin, 0);
-		dup2(g_mini.fdout, 1);
+		{
+			if (check_builtins(jobs))
+			{
+				dup2(g_mini.fdin, 0);
+				dup2(g_mini.fdout, 1);
+			}
+		}
+		else
+			ms_pipe(jobs);
 	}
 	else
 		ms_pipe(jobs);

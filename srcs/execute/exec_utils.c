@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 14:04:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/25 16:26:35 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/29 13:09:06 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*find_path(const char *cmd)
 	return (NULL);
 }
 
-void	verify_dir(char **cmd)
+void	verify_dir(char **cmd, t_job *job_head)
 {
 	struct stat	info;
 
@@ -41,6 +41,8 @@ void	verify_dir(char **cmd)
 		dup2(g_mini.fdin, 0);
 		dup2(g_mini.fdout, 1);
 		print_error(NULL, cmd[0], NO_FLDIR, FILE_ERR);
+		ft_free_jobs(&job_head);
+		ft_strarr_free(g_mini.env);
 		exit (FILE_ERR);
 	}
 	else if (S_ISDIR(info.st_mode))
@@ -48,11 +50,13 @@ void	verify_dir(char **cmd)
 		dup2(g_mini.fdin, 0);
 		dup2(g_mini.fdout, 1);
 		print_error(NULL, cmd[0], DIRECTORY, DIR_ERR);
+		ft_free_jobs(&job_head);
+		ft_strarr_free(g_mini.env);
 		exit (DIR_ERR);
 	}
 }
 
-void	execute(char **cmd)
+void	execute(char **cmd, t_job *job_head)
 {
 	char	*path_exec;
 
@@ -61,10 +65,12 @@ void	execute(char **cmd)
 	path_exec = find_path(cmd[0]);
 	execve(cmd[0], cmd, g_mini.env);
 	if (ft_strchr(cmd[0], '/'))
-		verify_dir(cmd);
+		verify_dir(cmd, job_head);
 	if (path_exec == NULL)
 	{
 		print_error(NULL, cmd[0], CMD_NOT_FOUND, FILE_ERR);
+		ft_free_jobs(&job_head);
+		ft_strarr_free(g_mini.env);
 		exit (FILE_ERR);
 	}
 	if (ft_strchr(cmd[0], '/'))
@@ -73,6 +79,8 @@ void	execute(char **cmd)
 		print_error(cmd[0], NULL, CMD_NOT_FOUND, FILE_ERR);
 	else if (execve(path_exec, cmd, g_mini.env) == -1)
 		print_error(cmd[0], NULL, strerror(errno), errno);
+	ft_free_jobs(&job_head);
+	ft_strarr_free(g_mini.env);
 	exit(g_mini.output_code);
 }
 

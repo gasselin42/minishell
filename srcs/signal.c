@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 14:30:36 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/26 10:32:58 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/29 15:58:07 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	exit_heredoc(int sig)
 {
 	(void)sig;
 	ft_putendl_fd("", STDERR_FILENO);
-	exit (GEN_ERR);
+	exit (CTRL_C);
 }
 
 void	ctrl_c(int sig)

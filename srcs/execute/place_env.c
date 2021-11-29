@@ -6,20 +6,11 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 11:42:38 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/20 09:27:09 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/29 12:05:11 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	reset_env(char **name, int equal)
-{
-	int	i;
-
-	i = ft_strarr_index(g_mini.env, name[0], "=");
-	delete_entry(i);
-	ft_setenv(name[0], "", equal);
-}
 
 char	*place_env(char *cmd, int *i, t_type type, t_token *token)
 {
@@ -64,6 +55,22 @@ char	*place_code(char *cmd, int *i)
 	return (tmp);
 }
 
+char	*delete_dollar(char *cmd, int *i)
+{
+	char	*debut;
+	char	*end;
+	char	*str;
+
+	debut = ft_substr(cmd, 0, *i);
+	end = ft_substr(cmd, *i + 2, ft_strlen(cmd) - (*i + 2));
+	free (cmd);
+	*i = *i - 1;
+	str = ft_strjoin(debut, end);
+	free (debut);
+	free (end);
+	return (str);
+}
+
 void	manage_dollar(t_token **tmp, t_type type)
 {
 	int	i;
@@ -72,6 +79,9 @@ void	manage_dollar(t_token **tmp, t_type type)
 	while ((*tmp)->cmd[++i])
 	{
 		if ((*tmp)->cmd[i] == '$' && (*tmp)->cmd[i + 1]
+			&& ft_isdigit((*tmp)->cmd[i + 1]))
+			(*tmp)->cmd = delete_dollar((*tmp)->cmd, &i);
+		else if ((*tmp)->cmd[i] == '$' && (*tmp)->cmd[i + 1]
 			&& ft_strchr(NAMESET, (*tmp)->cmd[i + 1]))
 			(*tmp)->cmd = place_env((*tmp)->cmd, &i, type, (*tmp));
 		else if ((*tmp)->cmd[i] == '$' && (*tmp)->cmd[i + 1]
