@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:46:28 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/29 16:13:13 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/30 11:25:27 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,6 @@ typedef struct s_job
 	int				fd[2];
 	int				status;
 	pid_t			pid;
-	struct s_job	*prev;
 	struct s_job	*next;
 }	t_job;
 
@@ -183,14 +182,14 @@ void		execute(char **cmd, t_job *job_head);
 bool		check_builtins(t_job *jobs);
 char		*find_path(const char *cmd);
 void		ms_pipe(t_job *jobs);
-void		ms_pipe_wait(t_job *jobs, int nb_pipe);
+void		ms_pipe_wait(t_job *jobs, t_pipe *pids, int nb_pipe);
 
 void		init_redirs(t_job *jobs);
 int			pipe_count(t_job *jobs);
 int			redir_heredocs(t_job *jobs, t_job *job_head, char *limiter);
-void		hdoc_write(t_job *jobs);
 int			ms_check_heredocs(t_job *jobs);
 char		*join_inputs(t_job *jobs, char *input);
+void		hdoc_write(t_job *jobs);
 
 void		set_signals(void);
 void		ctrl_c(int sig);
@@ -205,6 +204,7 @@ void		print_error(const char *v1, const char *v2, const char *v3, \
 void		ft_free_stuff(t_token **token, t_job **jobs);
 void		ft_free_jobs(t_job **jobs);
 void		ft_free_token(t_token **token);
+void		garbage_collector(t_job **jobs);
 
 void		change_level(void);
 char		**split_null(void);

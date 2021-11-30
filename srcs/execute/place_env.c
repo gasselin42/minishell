@@ -6,11 +6,20 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 11:42:38 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/29 12:05:11 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/30 10:44:14 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	reset_env(char **name, int equal)
+{
+	int	i;
+
+	i = ft_strarr_index(g_mini.env, name[0], "=");
+	delete_entry(i);
+	ft_setenv(name[0], "", equal);
+}
 
 char	*place_env(char *cmd, int *i, t_type type, t_token *token)
 {

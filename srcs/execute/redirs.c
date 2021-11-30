@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 13:55:37 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/29 14:46:58 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/30 09:42:28 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	count_redirs(t_token *token)
 void	init_redirs(t_job *jobs)
 {
 	int	i;
-	
+
 	i = 0;
 	g_mini.is_error = 0;
 	if (jobs->redirs)
@@ -72,15 +72,11 @@ void	init_redirs(t_job *jobs)
 			if (ft_strcmp(jobs->redirs[i], ">>") == 0)
 				redir_append(jobs->redirs[i + 1]);
 			else if (ft_strcmp(jobs->redirs[i], "<<") == 0)
-				dup2(jobs->fd[0], STDIN_FILENO);
+				hdoc_write(jobs);
 			else if (ft_strcmp(jobs->redirs[i], ">") == 0)
 				redir_output(jobs->redirs[i + 1]);
 			else if (ft_strcmp(jobs->redirs[i], "<") == 0)
-			{
 				redir_input(jobs->redirs[i + 1]);
-				if (g_mini.is_error)
-					return ;
-			}
 			i += 2;
 		}
 	}

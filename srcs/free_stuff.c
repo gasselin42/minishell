@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 14:06:30 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/25 15:51:43 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/30 10:34:31 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,11 @@ void	ft_free_token(t_token **token)
 			*token = tmp;
 		}
 	}
+}
+
+void	garbage_collector(t_job **jobs)
+{
+	ft_free_jobs(jobs);
+	ft_strarr_free(g_mini.env);
+	rl_clear_history();
 }

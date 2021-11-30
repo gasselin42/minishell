@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 14:04:43 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/29 13:09:06 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/30 10:39:44 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,7 @@ void	verify_dir(char **cmd, t_job *job_head)
 		dup2(g_mini.fdin, 0);
 		dup2(g_mini.fdout, 1);
 		print_error(NULL, cmd[0], NO_FLDIR, FILE_ERR);
-		ft_free_jobs(&job_head);
-		ft_strarr_free(g_mini.env);
+		garbage_collector(&job_head);
 		exit (FILE_ERR);
 	}
 	else if (S_ISDIR(info.st_mode))
@@ -50,8 +49,7 @@ void	verify_dir(char **cmd, t_job *job_head)
 		dup2(g_mini.fdin, 0);
 		dup2(g_mini.fdout, 1);
 		print_error(NULL, cmd[0], DIRECTORY, DIR_ERR);
-		ft_free_jobs(&job_head);
-		ft_strarr_free(g_mini.env);
+		garbage_collector(&job_head);
 		exit (DIR_ERR);
 	}
 }
@@ -69,8 +67,7 @@ void	execute(char **cmd, t_job *job_head)
 	if (path_exec == NULL)
 	{
 		print_error(NULL, cmd[0], CMD_NOT_FOUND, FILE_ERR);
-		ft_free_jobs(&job_head);
-		ft_strarr_free(g_mini.env);
+		garbage_collector(&job_head);
 		exit (FILE_ERR);
 	}
 	if (ft_strchr(cmd[0], '/'))
@@ -79,8 +76,7 @@ void	execute(char **cmd, t_job *job_head)
 		print_error(cmd[0], NULL, CMD_NOT_FOUND, FILE_ERR);
 	else if (execve(path_exec, cmd, g_mini.env) == -1)
 		print_error(cmd[0], NULL, strerror(errno), errno);
-	ft_free_jobs(&job_head);
-	ft_strarr_free(g_mini.env);
+	garbage_collector(&job_head);
 	exit(g_mini.output_code);
 }
 

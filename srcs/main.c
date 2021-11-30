@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 10:47:03 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/29 15:19:48 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/30 10:24:42 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ void	exec_start(char **line)
 	token = init_merge(token);
 	jobs = init_jobs(token);
 	ft_free_token(&token);
-	ms_start_exec(jobs);
+	if (!ms_check_heredocs(jobs))
+		ms_start_exec(jobs);
 	ft_free_jobs(&jobs);
 }
 
