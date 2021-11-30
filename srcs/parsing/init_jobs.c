@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 14:57:07 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/29 14:58:50 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/16 14:33:10 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ t_job	*add_back_job(t_job *job)
 	while (tmp->next != NULL)
 		tmp = tmp->next;
 	tmp->next = new_job;
-	new_job->prev = tmp;
 	return (job);
 }
 

@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 12:59:18 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/29 15:12:49 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/25 15:56:49 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ctrl_d(void)
 	exit(g_mini.output_code);
 }
 
-void	ms_pipe_wait(t_job *jobs, int nb_pipe)
+void	ms_pipe_wait(t_job *jobs, t_pipe *pids, int nb_pipe)
 {
 	t_job	*tmp;
 	int		i;
@@ -32,6 +32,7 @@ void	ms_pipe_wait(t_job *jobs, int nb_pipe)
 		if (tmp->next)
 			tmp = tmp->next;
 	}
+	free (pids);
 }
 
 bool	check_dot(char *line)

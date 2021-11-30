@@ -6,20 +6,11 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 13:37:26 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/29 12:05:17 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/11/25 13:47:04 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	reset_env(char **name, int equal)
-{
-	int	i;
-
-	i = ft_strarr_index(g_mini.env, name[0], "=");
-	delete_entry(i);
-	ft_setenv(name[0], "", equal);
-}
 
 void	merge_tokens3(t_token **tmp, char **str, char **str2)
 {
