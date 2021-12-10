@@ -6,7 +6,7 @@
 /*   By: gasselin <gasselin@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 15:03:49 by gasselin          #+#    #+#             */
-/*   Updated: 2021/11/26 11:40:32 by gasselin         ###   ########.fr       */
+/*   Updated: 2021/12/06 14:31:20 by gasselin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,13 +91,6 @@ void	unex_token(char *str)
 			print_error(NULL, NULL, UNEX_PIPES, SYNTAX_ERR);
 		else
 			print_error(NULL, NULL, UNEX_PIPE, SYNTAX_ERR);
-	}
-	if (syntax[0] && syntax[0] == ';')
-	{
-		if (syntax[1] && syntax[1] == ';')
-			print_error(NULL, NULL, UNEX_SEMICS, SYNTAX_ERR);
-		else
-			print_error(NULL, NULL, UNEX_SEMIC, SYNTAX_ERR);
 	}
 	else
 		unex_token1(str, syntax);
